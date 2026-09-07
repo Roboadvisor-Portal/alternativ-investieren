@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useMemo, useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { BookText, Link2 } from "lucide-react";
 import { Seo, breadcrumbSchema } from "@/components/Seo";
 import { Container } from "@/components/Layout";
@@ -12,7 +12,22 @@ const defkey = glossary.reduce((acc, g) => ({ ...acc, [g.slug]: g.term }), {});
 
 export default function Glossar() {
   const [letter, setLetter] = useState("Alle");
+  const { hash } = useLocation();
   const crumbs = [{ name: "Start", path: "/" }, { name: "Glossar", path: "/glossar/" }];
+
+  useEffect(() => {
+    if (hash) {
+      const id = hash.replace("#", "");
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          el.classList.add("ring-2", "ring-cta");
+          setTimeout(() => el.classList.remove("ring-2", "ring-cta"), 2000);
+        }
+      }, 250);
+    }
+  }, [hash]);
 
   const sorted = useMemo(() => [...glossary].sort((a, b) => a.term.localeCompare(b.term, "de")), []);
   const filtered = letter === "Alle" ? sorted : sorted.filter((g) => g.term.toUpperCase().startsWith(letter));

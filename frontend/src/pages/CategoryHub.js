@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
-import { Users, Building2, Check, X, Scale, Landmark, ArrowRight, Calculator, FileText } from "lucide-react";
+import { Users, Building2, Check, X, Scale, Landmark, ArrowRight, Calculator, FileText, BookText, TrendingUp, PieChart } from "lucide-react";
 import { Seo, breadcrumbSchema, faqSchema } from "@/components/Seo";
 import { Container } from "@/components/Layout";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -11,6 +11,19 @@ import { categories } from "@/data/categories";
 import { articles } from "@/data/articles";
 
 const iconMap = { Users, Building2 };
+
+const glossarByCat = {
+  crowdlending: ["crowdlending", "p2p-kredit", "einlagensicherung", "ausfallrate", "diversifikation", "abgeltungsteuer"],
+  "immobilien-crowdinvesting": ["immobilien-crowdinvesting", "nachrangdarlehen", "rangruecktritt", "ltv", "zweitmarkt", "vermoegensanlagengesetz"],
+};
+
+const glossarLabels = {
+  crowdlending: "Crowdlending", "p2p-kredit": "P2P-Kredit", einlagensicherung: "Einlagensicherung",
+  ausfallrate: "Ausfallrate", diversifikation: "Diversifikation", abgeltungsteuer: "Abgeltungsteuer",
+  "immobilien-crowdinvesting": "Immobilien-Crowdinvesting", nachrangdarlehen: "Nachrangdarlehen",
+  rangruecktritt: "Rangrücktritt", ltv: "LTV (Beleihungsauslauf)", zweitmarkt: "Zweitmarkt",
+  vermoegensanlagengesetz: "Vermögensanlagengesetz",
+};
 
 export default function CategoryHub({ slug: slugProp }) {
   const params = useParams();
@@ -170,6 +183,40 @@ export default function CategoryHub({ slug: slugProp }) {
             </div>
           </section>
         )}
+
+        {/* Interne Verlinkung: Rechner & Glossar */}
+        <section className="mt-16" data-testid="internal-links">
+          <h2 className="mb-6 font-heading text-2xl font-bold tracking-tight text-petrol-dark sm:text-3xl">Weiterführende Tools &amp; Begriffe</h2>
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="rounded-2xl border border-slate-200 bg-white p-6">
+              <p className="mb-4 flex items-center gap-2 font-heading font-bold text-petrol-dark"><Calculator className="h-5 w-5 text-petrol" aria-hidden="true" /> Passende Rechner</p>
+              <div className="space-y-2">
+                {[
+                  { to: "/rechner/rendite-szenario-rechner", icon: TrendingUp, label: "Rendite-Szenario-Rechner" },
+                  { to: "/rechner/diversifikations-rechner", icon: PieChart, label: "Diversifikations-Rechner" },
+                  { to: "/rechner/steuer-rechner-kapitalertraege", icon: Landmark, label: "Steuer-Rechner Kapitalerträge" },
+                ].map((r) => (
+                  <Link key={r.to} to={r.to} data-testid={`cat-rechner-${r.to}`} className="group flex items-center gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-sand">
+                    <r.icon className="h-4 w-4 text-petrol" aria-hidden="true" />
+                    <span className="flex-1 text-sm font-medium text-slate-700">{r.label}</span>
+                    <ArrowRight className="h-4 w-4 text-slate-300 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-6">
+              <p className="mb-4 flex items-center gap-2 font-heading font-bold text-petrol-dark"><BookText className="h-5 w-5 text-petrol" aria-hidden="true" /> Begriffe im Glossar</p>
+              <div className="flex flex-wrap gap-2">
+                {(glossarByCat[cat.slug] || []).map((t) => (
+                  <Link key={t} to={`/glossar/#${t}`} data-testid={`cat-glossar-${t}`} className="rounded-full border border-slate-200 bg-sand px-3 py-1.5 text-xs font-medium text-petrol transition-colors hover:border-petrol/40">
+                    {glossarLabels[t] || t}
+                  </Link>
+                ))}
+              </div>
+              <Link to="/glossar/" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cta">Zum vollständigen Glossar <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+            </div>
+          </div>
+        </section>
 
         <div className="mt-14"><RiskDisclaimerBanner /></div>
       </Container>

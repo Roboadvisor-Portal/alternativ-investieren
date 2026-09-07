@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from "react";
 import { Landmark } from "lucide-react";
-import { Seo, breadcrumbSchema } from "@/components/Seo";
+import { Seo, breadcrumbSchema, faqSchema } from "@/components/Seo";
 import { Container } from "@/components/Layout";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { RechnerShell, Field, eur2 } from "@/components/calculators/RechnerShell";
+import { RechnerContent } from "@/components/RechnerContent";
+import { rechnerContent } from "@/data/rechnerContent";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -54,7 +56,7 @@ export default function SteuerRechner() {
 
   return (
     <>
-      <Seo title="Steuer-Rechner Kapitalerträge (DACH) | Alternativ Investieren" description="Berechnen Sie vereinfacht die Steuer auf Zinserträge aus Crowdlending und Nachrangdarlehen: Abgeltungsteuer (DE), KESt (AT) oder Einkommensteuer (CH). Keine Steuerberatung." path="/rechner/steuer-rechner-kapitalertraege" jsonLd={[breadcrumbSchema(crumbs)]} />
+      <Seo title="Steuer-Rechner Kapitalerträge (DACH) | Alternativ Investieren" description="Berechnen Sie vereinfacht die Steuer auf Zinserträge aus Crowdlending und Nachrangdarlehen: Abgeltungsteuer (DE), KESt (AT) oder Einkommensteuer (CH). Keine Steuerberatung." path="/rechner/steuer-rechner-kapitalertraege" jsonLd={[breadcrumbSchema(crumbs), faqSchema(rechnerContent.steuer.faq)]} />
       <Container className="py-12">
         <Breadcrumbs items={crumbs} />
         <RechnerShell
@@ -140,6 +142,7 @@ export default function SteuerRechner() {
             </>
           }
         />
+        <RechnerContent content={rechnerContent.steuer} currentPath="/rechner/steuer-rechner-kapitalertraege" />
       </Container>
     </>
   );

@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from "react";
 import { PieChart as PieIcon, Plus, Trash2, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
-import { Seo, breadcrumbSchema } from "@/components/Seo";
+import { Seo, breadcrumbSchema, faqSchema } from "@/components/Seo";
 import { Container } from "@/components/Layout";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { RechnerShell, Field, eur } from "@/components/calculators/RechnerShell";
+import { RechnerContent } from "@/components/RechnerContent";
+import { rechnerContent } from "@/data/rechnerContent";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -46,7 +48,7 @@ export default function DiversifikationRechner() {
 
   return (
     <>
-      <Seo title="Diversifikations-Rechner | Alternativ Investieren" description="Visualisieren Sie Ihr Klumpenrisiko über mehrere Plattformen und Anlageklassen und erhalten Sie allgemeine Diversifikationstipps. Keine Anlageberatung." path="/rechner/diversifikations-rechner" jsonLd={[breadcrumbSchema(crumbs)]} />
+      <Seo title="Diversifikations-Rechner | Alternativ Investieren" description="Visualisieren Sie Ihr Klumpenrisiko über mehrere Plattformen und Anlageklassen und erhalten Sie allgemeine Diversifikationstipps. Keine Anlageberatung." path="/rechner/diversifikations-rechner" jsonLd={[breadcrumbSchema(crumbs), faqSchema(rechnerContent.diversifikation.faq)]} />
       <Container className="py-12">
         <Breadcrumbs items={crumbs} />
         <RechnerShell
@@ -116,6 +118,7 @@ export default function DiversifikationRechner() {
             </>
           }
         />
+        <RechnerContent content={rechnerContent.diversifikation} currentPath="/rechner/diversifikations-rechner" />
       </Container>
     </>
   );

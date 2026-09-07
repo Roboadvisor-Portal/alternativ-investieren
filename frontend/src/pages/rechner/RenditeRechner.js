@@ -3,10 +3,12 @@ import { TrendingUp } from "lucide-react";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from "recharts";
-import { Seo, breadcrumbSchema } from "@/components/Seo";
+import { Seo, breadcrumbSchema, faqSchema } from "@/components/Seo";
 import { Container } from "@/components/Layout";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { RechnerShell, Field, eur } from "@/components/calculators/RechnerShell";
+import { RechnerContent } from "@/components/RechnerContent";
+import { rechnerContent } from "@/data/rechnerContent";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -42,7 +44,7 @@ export default function RenditeRechner() {
 
   return (
     <>
-      <Seo title="Rendite-Szenario-Rechner | Alternativ Investieren" description="Drei Szenarien statt einer Prognose: Berechnen Sie modellhaft konservative, realistische und optimistische Entwicklungen Ihrer Anlage. Keine Anlageberatung." path="/rechner/rendite-szenario-rechner" jsonLd={[breadcrumbSchema(crumbs)]} />
+      <Seo title="Rendite-Szenario-Rechner | Alternativ Investieren" description="Drei Szenarien statt einer Prognose: Berechnen Sie modellhaft konservative, realistische und optimistische Entwicklungen Ihrer Anlage. Keine Anlageberatung." path="/rechner/rendite-szenario-rechner" jsonLd={[breadcrumbSchema(crumbs), faqSchema(rechnerContent.rendite.faq)]} />
       <Container className="py-12">
         <Breadcrumbs items={crumbs} />
         <RechnerShell
@@ -109,6 +111,7 @@ export default function RenditeRechner() {
             </>
           }
         />
+        <RechnerContent content={rechnerContent.rendite} currentPath="/rechner/rendite-szenario-rechner" />
       </Container>
     </>
   );
