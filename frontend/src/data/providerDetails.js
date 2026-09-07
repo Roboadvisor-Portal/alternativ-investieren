@@ -76,6 +76,63 @@ export const providerDetails = {
   ),
 };
 
+export const providerFaqs = {
+  debitum: [
+    { q: "Ist Debitum Investments reguliert?", a: "Ja. Debitum ist eine der wenigen in Europa MiFID-II-lizenzierten P2P-Plattformen und untersteht der lettischen Finanzaufsicht. Anlegergelder auf dem Verwahrkonto sind über das lettische Anlegerentschädigungssystem bis 20.000 Euro pro Anleger abgesichert – das schützt jedoch nicht vor dem Ausfallrisiko der einzelnen Unternehmenskredite." },
+    { q: "Wie hoch ist die Mindestanlage bei Debitum?", a: "Anleger können bereits ab 10 Euro pro Kredit investieren. Eine Auto-Invest-Funktion erleichtert die Streuung über viele Positionen, was zur Risikominimierung dringend empfohlen wird." },
+    { q: "Welche Rendite ist bei Debitum realistisch?", a: "Historisch lag die durchschnittliche Rendite bei rund 12–12,8 % p. a., ein Treueprogramm kann bis zu 2 % Zinsbonus ergänzen. Das sind Bruttowerte vor eventuellen Ausfällen und keine garantierte Prognose – die tatsächliche Nettorendite hängt von Ausfällen und Diversifikation ab." },
+    { q: "Was sind die größten Risiken bei Debitum?", a: "Trotz Regulierung bleibt ein Ausfallrisiko auf Unternehmensebene bestehen. Die Rückkaufverpflichtung ist nur ein Versprechen des jeweiligen Kreditanbahners; gerät dieser selbst in Schieflage, kann die Absicherung ins Leere laufen. Zudem fehlt ein Sekundärmarkt – das Kapital ist bis zum Laufzeitende gebunden." },
+  ],
+  viainvest: [
+    { q: "Wer steht hinter Viainvest?", a: "Viainvest ist die 2016 gestartete Plattform der lettischen VIA SMS Group, eines seit 2009 etablierten Fintech-Unternehmens. Investiert wird in kurzfristige Konsumkredite von Konzerngesellschaften der Gruppe." },
+    { q: "Gibt es bei Viainvest eine Rückkaufgarantie?", a: "Für nahezu alle Kredite gilt eine Rückkaufgarantie sowie eine Konzern-Gruppengarantie der VIA SMS Group. Wichtig: Diese Garantie hängt an der wirtschaftlichen Stabilität des Konzerns selbst – bei gehäuften Ausfällen könnte er seinen Verpflichtungen nicht mehr vollständig nachkommen." },
+    { q: "Gibt es einen Sekundärmarkt bei Viainvest?", a: "Ja, ein Sekundärmarkt ist vorhanden und ermöglicht vorzeitige Teil-Liquidität. Ein garantierter sofortiger Ausstieg zu jedem Zeitpunkt ist damit jedoch nicht zugesichert." },
+    { q: "Welches Klumpenrisiko besteht bei Viainvest?", a: "Da alle Kredite letztlich von Gesellschaften desselben Mutterkonzerns stammen, besteht ein strukturelles Klumpenrisiko: Eine echte Emittenten-Diversifikation innerhalb der Plattform ist nicht möglich." },
+  ],
+  mintos: [
+    { q: "Wie sicher ist Mintos?", a: "Mintos ist seit 2021 als MiFID-lizenzierte Investmentplattform durch die Latvijas Banka reguliert, verwahrt Anlegergelder getrennt und ist Mitglied im nationalen Anlegerentschädigungssystem (Schutz bis 20.000 € pro Anleger). Das schützt vor Plattformrisiken, nicht vor dem Ausfall einzelner Kredite." },
+    { q: "Ab welchem Betrag kann ich bei Mintos investieren?", a: "Bereits ab 5 Euro pro Position. Über automatisierte Portfolios („Core Loans“) lässt sich das Kapital breit über viele Kreditanbahner streuen." },
+    { q: "Sind die Renditeangaben bei Mintos garantiert?", a: "Nein. Alle Renditeangaben (ca. 9–14 % p. a.) sind Bruttorenditen vor individuellen Kreditausfällen. Die tatsächliche Nettorendite hängt stark von der eigenen Diversifikation und der Verlustquote im gewählten Portfolio ab." },
+    { q: "Haben alle Mintos-Kredite eine Rückkaufgarantie?", a: "Nein. Nicht jeder Kredit verfügt über eine Rückkaufgarantie. Ohne eine solche besteht bei Ausfall des Kreditnehmers das Risiko eines Totalverlusts der jeweiligen Einzelposition." },
+  ],
+  lendermarket: [
+    { q: "Ist Lendermarket reguliert?", a: "Seit Dezember 2024 ist Lendermarket als Crowdfunding-Dienstleister nach EU-Verordnung 2020/1503 (ECSP) durch die Central Bank of Ireland lizenziert. Anlegergelder werden seither über einen Partner getrennt vom Unternehmensvermögen verwahrt." },
+    { q: "Was hat es mit der Liquiditätskrise bei Lendermarket auf sich?", a: "Zwischen 2022 und 2024 durchlief die Plattform eine erhebliche Liquiditätskrise mit wiederholt verlängerten Rückzahlungen („Pending Payments“). Diese ausstehenden Zahlungen wurden nach Anbieterangaben im Oktober 2025 vollständig beglichen. Diese Historie sollte man kennen." },
+    { q: "Welches Klumpenrisiko besteht bei Lendermarket?", a: "Ein erheblicher Teil der Kredite stammt weiterhin von Creditstar-Gesellschaften. Wer parallel über andere Plattformen ebenfalls in Creditstar investiert, potenziert dieses Klumpenrisiko zusätzlich." },
+    { q: "Gibt es einen Sekundärmarkt bei Lendermarket?", a: "Einen klassischen Sekundärmarkt gibt es nicht. Seit 2026 steht mit „Auto Invest FLEX“ jedoch eine Variante mit vorzeitiger Ausstiegsoption zur Verfügung." },
+  ],
+  maclear: [
+    { q: "Ist Maclear wirklich „Schweizer reguliert“?", a: "Nur eingeschränkt. Maclear ist Mitglied der Selbstregulierungsorganisation PolyReg (v. a. Geldwäsche-/KYC-Prävention) mit nur indirekter FINMA-Aufsicht – das ist rechtlich etwas anderes als eine direkte, produktbezogene Finanzmarktlizenz wie bei MiFID-II- oder ECSP-Plattformen. Mehrere Testportale bewerten diesen Status kritisch." },
+    { q: "Wie hoch sind Rendite und Mindestanlage bei Maclear?", a: "Die Mindestanlage liegt bei 50 Euro, die beworbenen Renditen bei rund 14–15,6 % p. a. Solch hohe Renditen sind stets als Hinweis auf ein entsprechend höheres Risiko zu verstehen, nicht als besondere Gelegenheit." },
+    { q: "Gibt es bei Maclear eine Rückkaufgarantie?", a: "Nein. Es gibt weder eine Rückkaufgarantie noch geprüfte, veröffentlichte Geschäftsberichte. Ein Rückstellungsfonds soll laut Anbieter zusätzliche Sicherheit bieten." },
+    { q: "Warum wird Maclear als risikoreich eingestuft?", a: "Junger Track Record (Start 2023), nur eingeschränkte regulatorische Tiefe, keine Rückkaufgarantie, keine geprüften Geschäftsberichte und ein 2025 dokumentierter erster Kreditausfall. Ein Totalverlust einzelner Positionen ist ausdrücklich möglich." },
+  ],
+  letsinvest: [
+    { q: "Wie ist LetsInvest reguliert?", a: "LetsInvest ist nach der EU-weiten ECSP-Verordnung lizenziert und untersteht der Aufsicht der Bank von Litauen. Das erlaubt den grenzüberschreitenden Betrieb nach einheitlichen EU-Mindeststandards." },
+    { q: "Wie sind die Immobilienprojekte bei LetsInvest besichert?", a: "Rund 95 % der Finanzierungen sind erstrangig durch Grundschulden besichert, mit einem Beleihungsauslauf (LTV) von maximal 70–75 %. Seit Marktstart 2020 wurde bei rund 129 Mio. € Volumen nach Angaben kein Zahlungsverzug verzeichnet – eine Garantie für die Zukunft ist das nicht." },
+    { q: "Wie hoch ist die Mindestanlage bei LetsInvest?", a: "Die Mindestanlage liegt bei 500 Euro und damit deutlich über vielen Konsumkredit-Plattformen. Das erschwert eine granulare Streuung über viele Einzelprojekte." },
+    { q: "Kann ich bei LetsInvest vorzeitig aussteigen?", a: "Nein. Investiertes Kapital ist bis zur Fälligkeit fest gebunden, ein vorzeitiger Ausstieg ist nicht möglich. Bei Laufzeiten von 12–18 Monaten besteht zudem branchentypisch das Risiko von Bauverzögerungen." },
+  ],
+  "stock-estate": [
+    { q: "Ist Stock.estate reguliert?", a: "Ja. Stock.estate war die erste in Rumänien von der ASF lizenzierte Immobilien-Crowdfunding-Plattform und untersteht der EU-weiten ECSP-Verordnung inklusive Transparenzpflichten. Das ist jedoch keine Garantie gegen die Insolvenz einzelner Projektgesellschaften." },
+    { q: "Wie sind die Projekte bei Stock.estate besichert?", a: "Alle Kredite sind grundpfandrechtlich besichert, üblicherweise mit rund 150 % der Kreditsumme. Bei Nichterreichen der Mindestfinanzierung erhalten Anleger ihr Geld zurück, plus einen Cashback-Bonus." },
+    { q: "Welche Rendite bietet Stock.estate und was mindert sie?", a: "Beworben werden rund 12–18 % p. a. Zu beachten: Laufende Verwaltungsgebühren und eine rumänische Quellensteuer können die Bruttorendite spürbar schmälern – die Nettorendite sollte vor der Investition konkret berechnet werden." },
+    { q: "Was ist das Hauptrisiko bei Stock.estate?", a: "Die starke Länderkonzentration auf Rumänien: rumänienspezifische Immobilienmarkt- und Rechtsrisiken treffen das Portfolio überproportional. Zudem ist die Plattform noch jung (Start 2023/24) und hat einen kurzen Track Record." },
+  ],
+  fintown: [
+    { q: "Ist Fintown reguliert?", a: "Nein. Fintown ist nicht durch eine Finanzaufsichtsbehörde reguliert und bietet weder eine grundpfandrechtliche Absicherung noch eine klassische Rückkaufgarantie externer Dritter. Das ist der zentrale Unterschied zu regulierten Anbietern." },
+    { q: "Welcher Interessenkonflikt besteht bei Fintown?", a: "Statt externer Sicherheiten steht eine Konzerngarantie der Vihorev-Gruppe im Hintergrund. CEO Maxim Vihorev ist zugleich Eigentümer der Plattform und der garantierenden Gruppe – im Ernstfall müsste er faktisch gegen sich selbst entscheiden. Mehrere Testportale weisen ausdrücklich darauf hin." },
+    { q: "Kann ich bei Fintown vorzeitig aussteigen?", a: "Ein vorzeitiger Ausstieg ist möglich, jedoch nur gegen eine erhebliche Gebühr von bis zu 30 % des eingesetzten Kapitals. Das relativiert die vermeintliche Flexibilität deutlich. Einen Sekundärmarkt gibt es nicht." },
+    { q: "Bringt Streuung über mehrere Fintown-Projekte Sicherheit?", a: "Nur begrenzt. Da alle Projekte letztlich auf dieselbe Vihorev-Gruppe als Schuldner zurückgehen, bedeutet Streuung über mehrere Fintown-Projekte keine echte Emittenten-Diversifikation – bei Problemen der Gruppe wären potenziell alle Projekte betroffen." },
+  ],
+  crowdpear: [
+    { q: "Ist Crowdpear reguliert?", a: "Ja. Crowdpear wird seit Beginn von der Zentralbank Litauens beaufsichtigt und hält seit Juli 2023 zusätzlich die EU-weite ECSP-Lizenz. Anleger- und Unternehmensgelder werden gesetzlich getrennt verwahrt." },
+    { q: "Wer steht hinter Crowdpear?", a: "Crowdpear ist ein 2023 gestartetes Spin-off von PeerBerry, aufgebaut vom selben erfahrenen Team. Der Fokus liegt auf erstrangig hypothekenbesicherten Krediten in Litauen, ergänzt um Rumänien." },
+    { q: "Wie konservativ ist die Besicherung bei Crowdpear?", a: "Der durchschnittliche Beleihungsauslauf (LTV) liegt bei rund 58,4 % – ein vergleichsweise konservativer Wert. Die Ausfallquoten sind laut übereinstimmenden Testberichten niedrig. Ein Sekundärmarkt ist vorhanden." },
+    { q: "Welche Einschränkungen sollte ich bei Crowdpear kennen?", a: "Als junge Plattform mit starker Konzentration auf Litauen ist die Diversifikation über Länder noch eingeschränkt, ein Track Record über einen vollständigen Marktzyklus fehlt. Trotz Sekundärmarkt ist ein sofortiger Ausstieg in der Praxis nicht immer möglich." },
+  ],
+};
+
 export const tierLabels = {
   tier1: { label: "EU-Finanzlizenz + Anlegerentschädigung", color: "bg-emerald-50 text-emerald-800 border-emerald-200" },
   tier2: { label: "ECSP-lizenziert", color: "bg-sky-50 text-sky-800 border-sky-200" },

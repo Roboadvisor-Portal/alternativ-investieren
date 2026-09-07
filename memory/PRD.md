@@ -43,11 +43,19 @@ Deutschsprachiges Aufklärungs- und Vergleichsportal zu alternativen Investmentf
 - AnbieterCard erweitert, Sortierung nach Sternen, Detailseiten /anbieter/{slug} mit Volltext, Seite /wie-wir-bewerten/.
 - Admin-Formular um star_rating/trustpilot/regulation_tier/slug erweitert.
 
-## Teil 2 — vom Nutzer bestätigt, NOCH ZU BAUEN (nächstes Arbeitspaket)
-- P0: Emergent-managed Google Auth fürs Admin (Playbook + Flow in /app/auth_testing.md). E-Mail-Allowlist = ADMIN_EMAIL. JWT-Login danach entfernen/ersetzen.
-- P0: Blog-CMS im Admin: 3 bestehende Launch-Artikel nach MongoDB migrieren + CRUD inkl. SEO-Meta (title/description/slug/tags). articles.js -> DB.
-- P1: KI-Bildgenerierung im CMS über Emergent-Universal-Key (Beitragsbilder). integration_expert für Bild-Gen-Playbook holen, Key via emergent_integrations_manager.
-- Hinweis: Provider-CRUD & Blog-CRUD über dieselbe (Google-)Auth schützen.
+## Teil 2 — Status
+- ✅ (2026-09-07) Anbieter-Detailseiten: FAQ (4 Fragen/Anbieter, risikoorientiert) + Schema.org FAQPage JSON-LD je Anbieter. providerFaqs in providerDetails.js.
+- ✅ (2026-09-07) Blog-CMS (Option A – dynamisch aus MongoDB): 3 Launch-Artikel nach Mongo migriert (seed_articles.py, idempotent), Article-Modell + CRUD (/api/articles, /api/admin/articles), SEO-Felder (metaTitle/metaDescription/status). Öffentliche Ratgeber-Seiten + Home + Suche laden dynamisch aus Mongo -> neue/geänderte Artikel sofort live ohne Rebuild.
+- ✅ (2026-09-07) Admin-Artikelverwaltung /admin/artikel: voller Block-Editor (Absatz/H2/H3/Liste/Chart/Flow/Rank, reorder), Status Entwurf/Veröffentlicht, Quellen, Tags.
+- ✅ (2026-09-07) KI-Beitragsbilder: POST /api/admin/generate-image (Gemini Nano Banana via EMERGENT_LLM_KEY) -> Emergent Object Storage -> /api/media/{path} (public). EMERGENT_LLM_KEY in backend/.env.
+- ✅ (2026-09-07) Dynamische sitemap.xml unter /api/sitemap.xml (statische Routen + Artikel + Anbieter), robots.txt zeigt darauf. Aktualisiert sich bei jedem Publish.
+- ✅ Getestet: iteration_2.json 100% Backend + Frontend.
 
-## Next Tasks
-- Teil 2 umsetzen (Google Auth zuerst, dann Blog-CMS, dann KI-Bilder). Deployment mit Pre-Rendering evaluieren.
+## Deployment-Hinweis (mit Nutzer geklärt, 2026-09-07)
+- Emergent unterstützt KEINEN webhook-/programmatisch ausgelösten Rebuild+Deploy und KEIN Build-Time-SSG/Prerendering (Client-SPA). Ingress leitet Nicht-/api-Routen fest ans Frontend -> kein Dynamic Rendering aus FastAPI.
+- Entscheidung: Option A (dynamisch aus Mongo). Für "vollständig vorgerendertes HTML das sich auto-aktualisiert" wäre Next.js/externes Hosting (Vercel/Netlify) nötig (Option C, offen).
+
+## Offen / Backlog
+- P0 (offen): Emergent-managed Google Auth fürs Admin (Playbook + /app/auth_testing.md). Aktuell weiter JWT/Passwort-Login (bewusst beibehalten).
+- P1 (offen, mit Nutzer zu klären): Option C – Next.js/SSR-Umzug für echtes Prerender + Webhook-Rebuild. Datenmodell/CMS bewusst entkoppelt (Mongo = Source-of-Truth), damit Umzug ohne CMS-Neubau möglich.
+- P2: Admin-Bearbeitung der Anbieter-Detail-Volltexte (aktuell in providerDetails.js statisch).

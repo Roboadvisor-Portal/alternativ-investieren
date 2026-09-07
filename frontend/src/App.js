@@ -22,6 +22,7 @@ import Impressum from "@/pages/Impressum";
 import Datenschutz from "@/pages/Datenschutz";
 import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AdminArticles from "@/pages/admin/AdminArticles";
 import NotFound from "@/pages/NotFound";
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
             <Route path="/datenschutz/" element={<Datenschutz />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/artikel" element={<AdminArticles />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>

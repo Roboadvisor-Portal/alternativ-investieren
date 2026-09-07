@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { Clock, ArrowRight } from "lucide-react";
 import { Seo, breadcrumbSchema, articleSchema } from "@/components/Seo";
@@ -6,26 +6,35 @@ import { Container } from "@/components/Layout";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { VerifiedBadge, RiskDisclaimerBanner } from "@/components/Trust";
 import { ArticleBlocks, AuthorBox, SourcesBox } from "@/components/ArticleBlocks";
-import { articles } from "@/data/articles";
+import { api } from "@/lib/api";
 
 export default function RatgeberArticle() {
   const { slug } = useParams();
-  const article = articles.find((a) => a.slug === slug);
-  if (!article) return <Navigate to="/ratgeber/" replace />;
+  const [article, setArticle] = useState(undefined);
+  const [all, setAll] = useState([]);
+
+  useEffect(() => {
+    setArticle(undefined);
+    api.get(`/articles/${slug}`).then((r) => setArticle(r.data)).catch(() => setArticle(null));
+    api.get("/articles").then((r) => setAll(r.data)).catch(() => setAll([]));
+  }, [slug]);
+
+  if (article === undefined) return <Container className="py-20 text-center text-sm text-slate-400">Artikel wird geladen…</Container>;
+  if (article === null) return <Navigate to="/ratgeber/" replace />;
 
   const crumbs = [
     { name: "Start", path: "/" },
     { name: "Ratgeber", path: "/ratgeber/" },
     { name: article.title, path: `/ratgeber/${article.slug}` },
   ];
-  const more = articles.filter((a) => a.slug !== slug).slice(0, 2);
-  const fmtDate = (d) => new Date(d).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" });
+  const more = all.filter((a) => a.slug !== slug).slice(0, 2);
+  const fmtDate = (d) => (d ? new Date(d).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" }) : "");
 
   return (
     <>
       <Seo
-        title={`${article.title} | Alternativ Investieren`}
-        description={article.excerpt}
+        title={`${article.metaTitle || article.title} | Alternativ Investieren`}
+        description={article.metaDescription || article.excerpt}
         path={`/ratgeber/${article.slug}`}
         image={article.heroImage}
         jsonLd={[breadcrumbSchema(crumbs), articleSchema(article)]}

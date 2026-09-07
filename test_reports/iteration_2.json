@@ -1,0 +1,28 @@
+{
+  "summary": "Full backend + frontend testing for new Article CMS / FAQ / sitemap / AI image work package. Backend: 10/10 pytest cases pass (public article list only-published, get-by-slug, unknown 404, admin list auth-required, admin list with token, full CRUD lifecycle draft->publish->delete with sitemap propagation & slug-duplicate 400, sitemap XML contents incl. static+articles+providers, provider regression 9 providers, image gen unauthorized 401, real AI image generation via Gemini Nano Banana + media serve). Prior 11/11 backend_test.py still passing. Frontend: /anbieter/mintos and /anbieter/letsinvest render anbieter-faq with 4 questions + FAQPage JSON-LD; expand on click. /ratgeber/ dynamically shows all 3 articles from API. Article detail /ratgeber/nachrangdarlehen-einfach-erklaert renders answer-first, hero image, blocks, sources. Home 'Magazin' shows 3 cards. Cmd+K search modal finds articles. Admin login -> /admin/artikel -> create draft with block editor -> switch status to Veröffentlicht via shadcn Select -> save -> appears in admin table AND public /api/articles -> delete -> success toast + row removed. AI generate button + prompt input present (backend endpoint verified to actually produce valid image via Emergent Object Storage).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/backend/tests/test_articles.py",
+    "/app/test_reports/pytest/pytest_articles.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py has grown to 561 lines; consider splitting into routers (auth, providers, articles, media) for maintainability (>500 line threshold).",
+    "get_current_user still accepts cookie fallback (line 105) although spec is Bearer-only; low risk but dead branch.",
+    "CORS_ORIGINS default '*' combined with allow_credentials=True remains from previous iteration; browsers reject this combination, works only because auth is Bearer.",
+    "generate_image endpoint has no rate limiting; each call costs Emergent LLM credits and 10-40s. Admin-only mitigates abuse but consider a per-user throttle.",
+    "sitemap includes provider URLs even when provider.slug is set for is_example seed items; fine now but if is_example providers are ever unpublished, they'll still appear.",
+    "Article model uses ISO string for published/updated but sitemap does not validate format for <lastmod> (W3C datetime); minor SEO nit."
+  ],
+  "updated_files": ["/app/backend/tests/test_articles.py (new)"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "admin@alternativ-investieren.com / AltInvest2026!Admin",
+  "seed_data_creation": "None persistent. Test article 'test-playwright-artikel' + 'test-draft-article-crud' created and deleted within their tests. 3 seed articles + 9 providers seeded automatically at startup.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend tests split into two files: /app/backend/tests/backend_test.py (auth + provider CRUD, previous iteration) and /app/backend/tests/test_articles.py (articles, admin, sitemap, image). Run with REACT_APP_BACKEND_URL exported. Article status Select in admin editor is a shadcn/radix button (not native <select>) - use page.get_by_role('option', name='Veröffentlicht').click() after clicking [data-testid=article-status]. Auto-slug works from title. Image generation endpoint returns 200 with real Gemini image in ~15-25s; media path is served correctly with image/* Content-Type. FAQPage JSON-LD is injected on provider detail pages (verified 1 script tag with FAQPage).",
+  "rca of the issue": "No issues found."
+}

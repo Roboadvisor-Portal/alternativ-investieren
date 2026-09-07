@@ -19,4 +19,4 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
-Sitemap: https://alternativ-investieren.com/sitemap.xml
+Sitemap: https://alternativ-investieren.com/api/sitemap.xml

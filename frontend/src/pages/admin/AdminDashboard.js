@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, LogOut, X, ShieldAlert } from "lucide-react";
+import { Plus, Pencil, Trash2, LogOut, X, ShieldAlert, FileText } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { Seo } from "@/components/Seo";
@@ -91,8 +91,9 @@ export default function AdminDashboard() {
             <h1 className="font-heading text-3xl font-extrabold tracking-tight text-petrol-dark">Anbieter-Verwaltung</h1>
             <p className="mt-1 text-sm text-slate-500">Angemeldet als {user.email}</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button data-testid="admin-new-provider" onClick={openNew} className="gap-2 bg-cta hover:bg-cta-hover"><Plus className="h-4 w-4" /> Neuer Anbieter</Button>
+            <Button data-testid="admin-goto-articles" onClick={() => navigate("/admin/artikel")} variant="outline" className="gap-2"><FileText className="h-4 w-4" /> Artikel</Button>
             <Button data-testid="admin-logout" onClick={() => { logout(); navigate("/"); }} variant="outline" className="gap-2"><LogOut className="h-4 w-4" /> Abmelden</Button>
           </div>
         </div>

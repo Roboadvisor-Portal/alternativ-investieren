@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BookOpen, Clock } from "lucide-react";
 import { Seo, breadcrumbSchema } from "@/components/Seo";
 import { Container } from "@/components/Layout";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { articles, ratgeberTags } from "@/data/articles";
+import { api } from "@/lib/api";
+import { ratgeberTags } from "@/data/articles";
 
 export default function RatgeberList() {
   const [tag, setTag] = useState("Alle");
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.get("/articles").then((r) => setArticles(r.data)).catch(() => setArticles([])).finally(() => setLoading(false));
+  }, []);
+
   const filtered = tag === "Alle" ? articles : articles.filter((a) => a.tags.includes(tag));
   const crumbs = [{ name: "Start", path: "/" }, { name: "Ratgeber", path: "/ratgeber/" }];
 
@@ -67,6 +75,9 @@ export default function RatgeberList() {
             </motion.article>
           ))}
         </div>
+        {!loading && filtered.length === 0 && (
+          <p className="mt-10 text-center text-sm text-slate-400" data-testid="ratgeber-empty">Keine Artikel gefunden.</p>
+        )}
       </Container>
     </>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -10,7 +10,7 @@ import { Container } from "@/components/Layout";
 import { SectionTitle } from "@/components/FaqSection";
 import { VerifiedBadge } from "@/components/Trust";
 import { RenditeVergleichChart } from "@/components/charts/MarketDataCharts";
-import { articles } from "@/data/articles";
+import { api } from "@/lib/api";
 
 const categories = [
   { to: "/crowdlending/", icon: Users, label: "Crowdlending / P2P", desc: "Viele Anleger vergeben gemeinsam Kredite. Höhere Zinschancen, kein Einlagenschutz.", stat: "4 – 10 % p.a." },
@@ -29,6 +29,10 @@ const fade = {
 };
 
 export default function Home() {
+  const [articles, setArticles] = useState([]);
+  useEffect(() => {
+    api.get("/articles").then((r) => setArticles(r.data.slice(0, 3))).catch(() => setArticles([]));
+  }, []);
   return (
     <>
       <Seo

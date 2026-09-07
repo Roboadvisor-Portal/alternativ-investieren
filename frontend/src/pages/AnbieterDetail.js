@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ExternalLink, Wallet, Clock, Percent, Repeat } from "lucide-react";
 import { api } from "@/lib/api";
-import { Seo, breadcrumbSchema } from "@/components/Seo";
+import { Seo, breadcrumbSchema, faqSchema } from "@/components/Seo";
 import { Container } from "@/components/Layout";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { RiskAmpel, AdLabel, RiskDisclaimerBanner, LastUpdated } from "@/components/Trust";
 import { StarRating, TrustpilotBadge, TierBadge, fmtEuro, fmtTerm } from "@/components/AnbieterCard";
-import { providerDetails } from "@/data/providerDetails";
+import { FaqSection } from "@/components/FaqSection";
+import { providerDetails, providerFaqs } from "@/data/providerDetails";
 
 const catLabel = { crowdlending: "Crowdlending", "immobilien-crowdinvesting": "Immobilien-Crowdinvesting" };
 const sectionTitles = {
@@ -28,6 +29,7 @@ export default function AnbieterDetail() {
   if (provider === null || !detail) return <Navigate to="/" replace />;
 
   const cat = provider.asset_classes[0];
+  const faqs = providerFaqs[slug] || [];
   const crumbs = [
     { name: "Start", path: "/" },
     { name: catLabel[cat] || "Anbieter", path: `/${cat}/` },
@@ -42,7 +44,7 @@ export default function AnbieterDetail() {
 
   return (
     <>
-      <Seo title={`${provider.name}: Erfahrungen, Rendite & Regulierung | Alternativ Investieren`} description={provider.review_text?.slice(0, 155)} path={`/anbieter/${slug}`} jsonLd={[breadcrumbSchema(crumbs)]} />
+      <Seo title={`${provider.name}: Erfahrungen, Rendite & Regulierung | Alternativ Investieren`} description={provider.review_text?.slice(0, 155)} path={`/anbieter/${slug}`} jsonLd={faqs.length ? [breadcrumbSchema(crumbs), faqSchema(faqs)] : [breadcrumbSchema(crumbs)]} />
       <Container className="py-12">
         <Breadcrumbs items={crumbs} />
 
@@ -76,6 +78,12 @@ export default function AnbieterDetail() {
             </div>
 
             <RiskDisclaimerBanner className="mt-8" />
+
+            {faqs.length > 0 && (
+              <div className="mt-12" data-testid="anbieter-faq">
+                <FaqSection faq={faqs} title={`Häufige Fragen zu ${provider.name}`} />
+              </div>
+            )}
           </div>
 
           {/* Sticky Fakten + CTA */}

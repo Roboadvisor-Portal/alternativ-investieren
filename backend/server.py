@@ -5,17 +5,21 @@ import os
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-from fastapi import FastAPI, APIRouter, HTTPException, Request, Depends
+from fastapi import FastAPI, APIRouter, HTTPException, Request, Depends, Response
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import logging
 from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Optional
+from typing import List, Optional, Any
 import uuid
+import base64
+import requests
 from datetime import datetime, timezone, timedelta
 from bson import ObjectId
 import bcrypt
 import jwt
+from emergentintegrations.llm.chat import LlmChat, UserMessage
+from seed_articles import SEED_ARTICLES
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
@@ -23,6 +27,44 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 JWT_ALGORITHM = "HS256"
+
+# ---------- Emergent Object Storage ----------
+APP_NAME = "alternativ-investieren"
+EMERGENT_KEY = os.environ.get("EMERGENT_LLM_KEY")
+STORAGE_BASE = (os.environ.get("INTEGRATION_PROXY_URL") or "").strip() or "https://integrations.emergentagent.com"
+STORAGE_URL = STORAGE_BASE.rstrip("/") + "/objstore/api/v1/storage"
+_storage_key = None
+
+
+def init_storage(force: bool = False):
+    global _storage_key
+    if _storage_key and not force:
+        return _storage_key
+    resp = requests.post(f"{STORAGE_URL}/init", json={"emergent_key": EMERGENT_KEY}, timeout=30)
+    resp.raise_for_status()
+    _storage_key = resp.json()["storage_key"]
+    return _storage_key
+
+
+def put_object(path: str, data: bytes, content_type: str) -> dict:
+    key = init_storage()
+    resp = requests.put(
+        f"{STORAGE_URL}/objects/{path}",
+        headers={"X-Storage-Key": key, "Content-Type": content_type},
+        data=data, timeout=120,
+    )
+    resp.raise_for_status()
+    return resp.json()
+
+
+def get_object(path: str):
+    key = init_storage()
+    resp = requests.get(
+        f"{STORAGE_URL}/objects/{path}",
+        headers={"X-Storage-Key": key}, timeout=60,
+    )
+    resp.raise_for_status()
+    return resp.content, resp.headers.get("Content-Type", "application/octet-stream")
 
 app = FastAPI(title="Alternativ Investieren API")
 api_router = APIRouter(prefix="/api")
@@ -144,7 +186,52 @@ class ProviderCreate(BaseModel):
     is_example: bool = True
 
 
-# ---------- Auth routes ----------
+class Article(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    slug: str
+    title: str
+    excerpt: Optional[str] = ""
+    metaTitle: Optional[str] = ""
+    metaDescription: Optional[str] = ""
+    category: Optional[str] = "crowdlending"
+    tags: List[str] = []
+    author: Optional[str] = "Markus G"
+    published: Optional[str] = ""
+    updated: Optional[str] = ""
+    readingTime: Optional[int] = 5
+    status: Optional[str] = "published"          # published | draft
+    heroImage: Optional[str] = ""
+    heroAlt: Optional[str] = ""
+    answerFirst: Optional[str] = ""
+    blocks: List[Any] = []
+    sources: List[str] = []
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    updated_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
+class ArticleCreate(BaseModel):
+    slug: str
+    title: str
+    excerpt: Optional[str] = ""
+    metaTitle: Optional[str] = ""
+    metaDescription: Optional[str] = ""
+    category: Optional[str] = "crowdlending"
+    tags: List[str] = []
+    author: Optional[str] = "Markus G"
+    published: Optional[str] = ""
+    updated: Optional[str] = ""
+    readingTime: Optional[int] = 5
+    status: Optional[str] = "published"
+    heroImage: Optional[str] = ""
+    heroAlt: Optional[str] = ""
+    answerFirst: Optional[str] = ""
+    blocks: List[Any] = []
+    sources: List[str] = []
+
+
+class ImagePrompt(BaseModel):
+    prompt: str
 @api_router.post("/auth/login")
 async def login(data: LoginInput):
     email = data.email.strip().lower()
@@ -212,6 +299,150 @@ async def delete_provider(provider_id: str, user: dict = Depends(get_current_use
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Anbieter nicht gefunden")
     return {"message": "Anbieter gelöscht"}
+
+
+# ---------- Article (Blog/CMS) routes ----------
+@api_router.get("/articles", response_model=List[Article])
+async def list_articles(category: Optional[str] = None):
+    query = {"status": "published"}
+    if category:
+        query["category"] = category
+    docs = await db.articles.find(query, {"_id": 0}).to_list(500)
+    docs.sort(key=lambda d: d.get("published", ""), reverse=True)
+    return [Article(**d) for d in docs]
+
+
+@api_router.get("/admin/articles", response_model=List[Article])
+async def admin_list_articles(user: dict = Depends(get_current_user)):
+    docs = await db.articles.find({}, {"_id": 0}).to_list(500)
+    docs.sort(key=lambda d: d.get("published", ""), reverse=True)
+    return [Article(**d) for d in docs]
+
+
+@api_router.get("/articles/{slug}", response_model=Article)
+async def get_article(slug: str):
+    doc = await db.articles.find_one({"slug": slug, "status": "published"}, {"_id": 0})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Artikel nicht gefunden")
+    return Article(**doc)
+
+
+@api_router.post("/articles", response_model=Article)
+async def create_article(data: ArticleCreate, user: dict = Depends(get_current_user)):
+    if await db.articles.find_one({"slug": data.slug}):
+        raise HTTPException(status_code=400, detail="Slug bereits vergeben")
+    article = Article(**data.model_dump())
+    await db.articles.insert_one(article.model_dump())
+    return article
+
+
+@api_router.put("/articles/{article_id}", response_model=Article)
+async def update_article(article_id: str, data: ArticleCreate, user: dict = Depends(get_current_user)):
+    existing = await db.articles.find_one({"id": article_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Artikel nicht gefunden")
+    dup = await db.articles.find_one({"slug": data.slug, "id": {"$ne": article_id}})
+    if dup:
+        raise HTTPException(status_code=400, detail="Slug bereits vergeben")
+    update = data.model_dump()
+    update["updated_at"] = datetime.now(timezone.utc).isoformat()
+    await db.articles.update_one({"id": article_id}, {"$set": update})
+    merged = {**existing, **update}
+    return Article(**merged)
+
+
+@api_router.delete("/articles/{article_id}")
+async def delete_article(article_id: str, user: dict = Depends(get_current_user)):
+    res = await db.articles.delete_one({"id": article_id})
+    if res.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Artikel nicht gefunden")
+    return {"message": "Artikel gelöscht"}
+
+
+# ---------- KI-Bildgenerierung + Media ----------
+@api_router.post("/admin/generate-image")
+async def generate_image(data: ImagePrompt, user: dict = Depends(get_current_user)):
+    try:
+        chat = LlmChat(api_key=EMERGENT_KEY, session_id=str(uuid.uuid4()),
+                       system_message="Du erstellst redaktionelle, seriöse Beitragsbilder für ein Finanz-Fachportal.")
+        chat.with_model("gemini", "gemini-3.1-flash-image-preview").with_params(modalities=["image", "text"])
+        msg = UserMessage(text=data.prompt)
+        _text, images = await chat.send_message_multimodal_response(msg)
+    except Exception as e:
+        logger.error(f"Bildgenerierung fehlgeschlagen: {e}")
+        raise HTTPException(status_code=502, detail="Bildgenerierung fehlgeschlagen")
+    if not images:
+        raise HTTPException(status_code=502, detail="Keine Bilddaten erhalten")
+    img = images[0]
+    image_bytes = base64.b64decode(img["data"])
+    mime = img.get("mime_type", "image/png")
+    ext = "png" if "png" in mime else ("jpg" if "jpe" in mime else "png")
+    path = f"{APP_NAME}/blog/{uuid.uuid4()}.{ext}"
+    try:
+        result = put_object(path, image_bytes, mime)
+    except Exception as e:
+        logger.error(f"Upload fehlgeschlagen: {e}")
+        raise HTTPException(status_code=502, detail="Speichern des Bildes fehlgeschlagen")
+    stored_path = result.get("path", path)
+    await db.media.insert_one({
+        "id": str(uuid.uuid4()),
+        "storage_path": stored_path,
+        "content_type": mime,
+        "prompt": data.prompt[:500],
+        "is_deleted": False,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+    return {"media_path": stored_path}
+
+
+@api_router.get("/media/{path:path}")
+async def serve_media(path: str):
+    record = await db.media.find_one({"storage_path": path, "is_deleted": False})
+    if not record:
+        raise HTTPException(status_code=404, detail="Bild nicht gefunden")
+    try:
+        data, content_type = get_object(path)
+    except Exception:
+        init_storage(force=True)
+        data, content_type = get_object(path)
+    return Response(content=data, media_type=record.get("content_type", content_type))
+
+
+# ---------- Dynamische sitemap.xml (aktualisiert sich bei jedem Publish) ----------
+@api_router.get("/sitemap.xml")
+async def sitemap():
+    SITE = "https://alternativ-investieren.com"
+    static_urls = [
+        ("/", "weekly", "1.0"),
+        ("/crowdlending/", "weekly", "0.9"),
+        ("/immobilien-crowdinvesting/", "weekly", "0.9"),
+        ("/rechner/", "monthly", "0.7"),
+        ("/rechner/rendite-szenario-rechner", "monthly", "0.7"),
+        ("/rechner/diversifikations-rechner", "monthly", "0.7"),
+        ("/rechner/steuer-rechner-kapitalertraege", "monthly", "0.7"),
+        ("/ratgeber/", "weekly", "0.8"),
+        ("/glossar/", "monthly", "0.8"),
+        ("/wie-wir-bewerten/", "yearly", "0.5"),
+        ("/risikohinweise/", "yearly", "0.6"),
+        ("/ueber-uns/", "yearly", "0.5"),
+        ("/downloads/", "monthly", "0.5"),
+        ("/impressum/", "yearly", "0.3"),
+        ("/datenschutz/", "yearly", "0.3"),
+    ]
+    parts = ['<?xml version="1.0" encoding="UTF-8"?>',
+             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for loc, cf, pr in static_urls:
+        parts.append(f"<url><loc>{SITE}{loc}</loc><changefreq>{cf}</changefreq><priority>{pr}</priority></url>")
+    articles = await db.articles.find({"status": "published"}, {"_id": 0, "slug": 1, "updated": 1}).to_list(500)
+    for a in articles:
+        lastmod = f"<lastmod>{a['updated']}</lastmod>" if a.get("updated") else ""
+        parts.append(f"<url><loc>{SITE}/ratgeber/{a['slug']}</loc>{lastmod}<changefreq>monthly</changefreq><priority>0.8</priority></url>")
+    providers = await db.providers.find({}, {"_id": 0, "slug": 1}).to_list(500)
+    for p in providers:
+        if p.get("slug"):
+            parts.append(f"<url><loc>{SITE}/anbieter/{p['slug']}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>")
+    parts.append("</urlset>")
+    return Response(content="\n".join(parts), media_type="application/xml")
 
 
 @api_router.get("/")
@@ -307,6 +538,21 @@ async def startup():
             provider = Provider(**p)
             await db.providers.insert_one(provider.model_dump())
         logger.info("Sample providers reseeded (9 real profiles).")
+
+    # Seed/migrate launch articles (idempotent by slug)
+    for a in SEED_ARTICLES:
+        exists = await db.articles.find_one({"slug": a["slug"]})
+        if exists is None:
+            article = Article(**a)
+            await db.articles.insert_one(article.model_dump())
+            logger.info(f"Article migrated: {a['slug']}")
+
+    # Init object storage (non-fatal if unavailable)
+    try:
+        init_storage()
+        logger.info("Object storage initialized.")
+    except Exception as e:
+        logger.error(f"Storage init failed: {e}")
 
 
 @app.on_event("shutdown")

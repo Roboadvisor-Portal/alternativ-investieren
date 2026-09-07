@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search as SearchIcon, FileText, BookText, Calculator, Layers } from "lucide-react";
-import { articles } from "@/data/articles";
+import { api } from "@/lib/api";
 import { glossary } from "@/data/glossary";
 
 const staticEntries = [
@@ -15,11 +15,18 @@ const staticEntries = [
 
 export function SearchModal({ open, onClose }) {
   const [q, setQ] = useState("");
+  const [articles, setArticles] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!open) setQ("");
   }, [open]);
+
+  useEffect(() => {
+    if (open && articles.length === 0) {
+      api.get("/articles").then((r) => setArticles(r.data)).catch(() => {});
+    }
+  }, [open, articles.length]);
 
   const results = useMemo(() => {
     const entries = [
@@ -30,7 +37,7 @@ export function SearchModal({ open, onClose }) {
     if (!q.trim()) return entries.slice(0, 8);
     const term = q.toLowerCase();
     return entries.filter((e) => e.title.toLowerCase().includes(term) || e.type.toLowerCase().includes(term)).slice(0, 10);
-  }, [q]);
+  }, [q, articles]);
 
   const go = (path) => {
     onClose();
