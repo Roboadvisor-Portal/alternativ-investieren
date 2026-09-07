@@ -8,7 +8,7 @@ import {
 import { Seo, organizationSchema, websiteSchema } from "@/components/Seo";
 import { Container } from "@/components/Layout";
 import { SectionTitle } from "@/components/FaqSection";
-import { VerifiedBadge, RiskDisclaimerBanner } from "@/components/Trust";
+import { VerifiedBadge } from "@/components/Trust";
 import { RenditeVergleichChart } from "@/components/charts/MarketDataCharts";
 import { articles } from "@/data/articles";
 
@@ -53,8 +53,9 @@ export default function Home() {
                 Alternative Investments verstehen – <span className="text-cta-gold">bevor</span> Sie investieren
               </motion.h1>
               <motion.p initial="hidden" animate="show" custom={2} variants={fade} className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
-                Fundierte Aufklärung zu Crowdlending und Immobilien-Crowdinvesting: Chancen, Risiken,
-                Regulierung und ein transparenter Anbietervergleich – ohne reißerische Versprechen.
+                Wir nehmen alternative Investments ernst – mit fundierten Informationen zu Crowdlending
+                und Immobilien-Crowdinvesting, echten Zahlen statt Hochglanz-Versprechen und einem
+                Anbietervergleich, der Klartext spricht.
               </motion.p>
               <motion.div initial="hidden" animate="show" custom={3} variants={fade} className="mt-8 flex flex-wrap gap-3">
                 <Link to="/crowdlending/" data-testid="hero-cta-crowdlending" className="inline-flex items-center gap-2 rounded-lg bg-cta px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-cta-hover">
@@ -76,17 +77,23 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* Risk banner */}
-      <Container className="-mt-8 relative z-10">
-        <RiskDisclaimerBanner />
-      </Container>
+      {/* Risk banner moved to footer */}
 
       {/* Categories */}
       <Container className="py-16 lg:py-24">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <SectionTitle eyebrow="Anlageklassen">Zwei Wege, alternativ zu investieren</SectionTitle>
           <VerifiedBadge />
         </div>
+        <p className="mb-10 max-w-3xl text-base leading-relaxed text-slate-600">
+          Crowdlending und Immobilien-Crowdinvesting sind die beiden zugänglichsten Formen alternativer
+          Geldanlage für Privatanleger im DACH-Raum. Beide funktionieren nach demselben Grundprinzip –
+          viele Anleger finanzieren gemeinsam über eine Plattform – unterscheiden sich aber deutlich in
+          Sicherheitenstruktur, Laufzeit und Risikoprofil. Beim Crowdlending steht das Ausfallrisiko
+          einzelner Kredite im Vordergrund, beim Immobilien-Crowdinvesting die Nachrangigkeit gegenüber
+          finanzierenden Banken. Wählen Sie eine Anlageklasse, um Funktionsweise, Zahlen, Regulierung und
+          einen strukturierten Anbietervergleich im Detail zu sehen.
+        </p>
         <div className="grid gap-6 md:grid-cols-2">
           {categories.map((c, i) => (
             <motion.div key={c.to} initial="hidden" whileInView="show" viewport={{ once: true }} custom={i} variants={fade}>
@@ -160,7 +167,7 @@ export default function Home() {
       {/* Latest articles */}
       <Container className="py-16 lg:py-24">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-          <SectionTitle eyebrow="Ratgeber">Aktuelle Aufklärungs-Artikel</SectionTitle>
+          <SectionTitle eyebrow="Ratgeber">Aktuelles aus unserem Magazin</SectionTitle>
           <Link to="/ratgeber/" className="inline-flex items-center gap-1 text-sm font-semibold text-cta" data-testid="home-all-articles">Alle Artikel <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
         </div>
         <div className="grid gap-6 md:grid-cols-3">

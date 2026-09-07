@@ -48,6 +48,7 @@ export function MarktvolumenChart() {
 
 const yieldData = [
   { name: "Tagesgeld", von: 1.5, bis: 3.5 },
+  { name: "Festgeld", von: 2, bis: 3.8 },
   { name: "Crowdlending", von: 4, bis: 10 },
   { name: "Immobilien-CI", von: 4, bis: 8 },
 ];
@@ -55,7 +56,7 @@ const yieldData = [
 export function RenditeVergleichChart() {
   const data = yieldData.map((d) => ({ name: d.name, min: d.von, spanne: d.bis - d.von }));
   return (
-    <div className="h-64 w-full" data-testid="chart-rendite-vergleich">
+    <div className="h-72 w-full" data-testid="chart-rendite-vergleich">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} layout="vertical" margin={{ top: 8, right: 24, left: 8, bottom: 0 }} barCategoryGap="30%">
           <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" horizontal={false} />
