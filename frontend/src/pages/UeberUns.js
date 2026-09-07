@@ -27,7 +27,13 @@ const ziele = [
   },
 ];
 
-const kolumnen = ["Talkmarkets", "Stocktwits", "Publish0X", "Focus.de", "Sharewise"];
+const kolumnen = [
+  { name: "Talkmarkets", url: "https://talkmarkets.com/profile/Investment-Freak" },
+  { name: "Stocktwits", url: "https://stocktwits.com/FinTech_Freak" },
+  { name: "Publish0X", url: "https://www.publish0x.com/finance-meets-crypto/" },
+  { name: "Focus.de", url: "https://www.focus.de/finanzen/boerse/lexikon/boersenlexikon-robo-advisor_id_10468455.html" },
+  { name: "Sharewise", url: "https://www.sharewise.com/de/authors/Markus11111" },
+];
 
 export default function UeberUns() {
   const crumbs = [{ name: "Start", path: "/" }, { name: "Über uns", path: "/ueber-uns/" }];
@@ -113,9 +119,16 @@ export default function UeberUns() {
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {kolumnen.map((k) => (
-                <span key={k} className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-petrol">
-                  <ExternalLink className="h-3 w-3" aria-hidden="true" />{k}
-                </span>
+                <a
+                  key={k.name}
+                  href={k.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid={`kolumne-link-${k.name}`}
+                  className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-petrol transition-colors hover:border-cta hover:text-cta"
+                >
+                  <ExternalLink className="h-3 w-3" aria-hidden="true" />{k.name}
+                </a>
               ))}
             </div>
           </div>
