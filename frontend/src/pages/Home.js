@@ -104,6 +104,43 @@ export default function Home() {
         </div>
       </Container>
 
+      {/* Educational / editorial section */}
+      <div className="border-y border-slate-200 bg-white">
+        <Container className="py-16 lg:py-24">
+          <div className="grid gap-12 lg:grid-cols-3">
+            <div className="lg:col-span-2">
+              <SectionTitle eyebrow="Grundlagen">Was sind alternative Investments – und warum jetzt?</SectionTitle>
+              <div className="prose-editorial mt-6 max-w-none">
+                <p>Als alternative Investments bezeichnet man Anlageformen jenseits der klassischen Bausteine wie Tagesgeld, Sparbuch, Aktien, Anleihen oder breit gestreute ETFs. Dazu zählen unter anderem Crowdlending, Immobilien-Crowdinvesting, Beteiligungen an Sachwerten und Nachrangdarlehen. Ihr gemeinsames Merkmal: Sie versprechen eine höhere Verzinsung als klassische Bankprodukte – im Gegenzug für ein deutlich höheres Risiko und eine eingeschränkte Verfügbarkeit des Kapitals.</p>
+                <p>In den vergangenen Jahren sind diese Anlageformen für Privatanleger leicht zugänglich geworden. Online-Plattformen senken die Einstiegshürden auf oft nur 25 bis 500 Euro pro Projekt, wo früher fünfstellige Mindestbeträge und ein Bankberater nötig waren. Diese Demokratisierung ist eine Chance – sie verlagert aber auch die Verantwortung für die Risikoprüfung vollständig auf den Anleger selbst.</p>
+                <p>Genau hier setzt dieses Portal an. Wir erklären nicht nur, wie die einzelnen Anlageformen funktionieren, sondern auch, welche Risiken sie tragen, wie sie reguliert und besteuert werden und worauf man vor einer Investition achten sollte. Unser Anspruch ist Aufklärung mit belegbaren Zahlen und klaren Definitionen – keine Renditeversprechen und keine Verharmlosung realer Verlustfälle.</p>
+                <p>Der wichtigste Grundsatz vorweg: Alternative Investments gehören – wenn überhaupt – nur als kleine, klar begrenzte Beimischung in ein Portfolio, dessen Fundament aus sicheren und jederzeit verfügbaren Anlagen besteht. Sie ersetzen weder die Notfallreserve auf dem Tagesgeldkonto noch eine breit gestreute Altersvorsorge.</p>
+              </div>
+            </div>
+
+            <aside className="space-y-4">
+              <div className="rounded-2xl border border-slate-200 bg-sand p-5">
+                <p className="mb-1 text-xs font-bold uppercase tracking-wider text-cta">Definition</p>
+                <p className="font-heading text-base font-bold text-petrol-dark">Einlagensicherung</p>
+                <p className="mt-1 text-sm text-slate-600">Gesetzlicher Schutz von Bankguthaben bis 100.000 € pro Kunde und Institut. Bei alternativen Investments existiert dieser Schutz <strong>nicht</strong>.</p>
+              </div>
+              <div className="rounded-2xl border border-slate-200 bg-sand p-5">
+                <p className="mb-1 text-xs font-bold uppercase tracking-wider text-cta">Faustregel</p>
+                <p className="font-heading text-base font-bold text-petrol-dark">Risiko-Prämie</p>
+                <p className="mt-1 text-sm text-slate-600">Je höher der versprochene Zins, desto höher das eingepreiste Ausfallrisiko. Hohe Renditen sind kein Geschenk, sondern eine Warnung.</p>
+              </div>
+              <Link to="/glossar/" data-testid="home-glossar-link" className="flex items-center justify-between rounded-2xl border border-petrol/20 bg-petrol p-5 text-white transition-colors hover:bg-petrol-light">
+                <span>
+                  <span className="block font-heading font-bold">Fachbegriffe klären</span>
+                  <span className="block text-xs text-slate-300">17 Definitionen im Glossar</span>
+                </span>
+                <ArrowRight className="h-5 w-5" aria-hidden="true" />
+              </Link>
+            </aside>
+          </div>
+        </Container>
+      </div>
+
       {/* Rechner */}
       <div className="bg-petrol-darker py-16 text-white lg:py-24">
         <Container>

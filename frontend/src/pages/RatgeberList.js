@@ -30,6 +30,11 @@ export default function RatgeberList() {
           </div>
         </div>
 
+        <div className="mt-8 max-w-3xl prose-editorial">
+          <p>Im Ratgeber vertiefen wir einzelne Themen rund um alternative Investments – von der Einordnung ganzer Anlageklassen über konkrete Risiken bis zu rechtlichen und steuerlichen Fragen. Jeder Beitrag beginnt mit einer kompakten Kernaussage, nennt seine Quellen und ordnet die Sachverhalte nüchtern ein. Uns geht es nicht darum, Anlageprodukte zu bewerben, sondern darum, Zusammenhänge verständlich zu machen und typische Fehler vermeidbar zu machen.</p>
+          <p>Besonderes Gewicht legen wir auf reale Fälle: Plattform-Insolvenzen, ausgesetzte Zinszahlungen und Totalverluste sind bei alternativen Investments keine theoretische Möglichkeit, sondern in den vergangenen Jahren mehrfach eingetreten. Wer diese Mechanismen versteht, kann Chancen und Risiken realistischer einschätzen. Nutzen Sie die Themen-Filter, um gezielt Artikel zu Steuern, Regulierung, Ausfallrisiken oder Diversifikation zu finden.</p>
+        </div>
+
         <div className="mt-8 flex flex-wrap gap-2" data-testid="ratgeber-tags">
           {["Alle", ...ratgeberTags].map((t) => (
             <button

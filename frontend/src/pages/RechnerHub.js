@@ -27,6 +27,11 @@ export default function RechnerHub() {
           </div>
         </div>
 
+        <div className="mt-6 max-w-3xl prose-editorial">
+          <p>Zahlen schaffen Klarheit – aber nur, wenn man ihre Annahmen kennt. Unsere Rechner helfen Ihnen, ein Gefühl für Größenordnungen zu entwickeln: Wie stark wirkt sich die Anlagedauer auf das Endkapital aus? Wie groß ist mein Klumpenrisiko wirklich, wenn ein großer Teil meines Geldes auf einer einzigen Plattform liegt? Und wie viel bleibt nach Steuern von meinen Zinserträgen übrig?</p>
+          <p>Bewusst verzichten wir auf punktgenaue Renditeversprechen. Der Rendite-Rechner arbeitet deshalb mit drei Szenarien statt einer einzelnen Prognose, und alle Ergebnisse sind Modellrechnungen, die reale Faktoren wie Ausfälle vereinfacht abbilden. Jeder Rechner enthält eine aufklappbare Methodik-Box, die genau erläutert, welche Annahmen zugrunde liegen.</p>
+        </div>
+
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {tools.map((t) => (
             <Link key={t.to} to={t.to} data-testid={`rechner-hub-${t.to}`} className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-7 transition-all hover:border-petrol/30 hover:shadow-lg">

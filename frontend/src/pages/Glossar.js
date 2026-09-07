@@ -43,6 +43,11 @@ export default function Glossar() {
           </div>
         </div>
 
+        <div className="mt-6 max-w-3xl prose-editorial">
+          <p>Die Welt der alternativen Investments hat ihre eigene Sprache: Nachrangdarlehen, Rangrücktritt, ECSP-Verordnung, Beleihungsauslauf oder Zweitmarkt begegnen Anlegern in Prospekten und auf Plattformen ständig. Wer diese Begriffe nicht sauber einordnen kann, überschätzt schnell die Sicherheit einer Anlage. In diesem Glossar erklären wir die zentralen Fachbegriffe in kurzen, präzisen Definitionen – bewusst so formuliert, dass sie für sich allein verständlich bleiben.</p>
+          <p>Die Begriffe sind untereinander verlinkt, sodass Sie Zusammenhänge direkt weiterverfolgen können. Alle Definitionen dienen der Aufklärung und ersetzen keine Beratung im Einzelfall.</p>
+        </div>
+
         <div className="mt-8 flex flex-wrap gap-1.5" data-testid="glossar-alphabet">
           <button onClick={() => setLetter("Alle")} className={`rounded-lg px-3 py-1.5 text-xs font-bold ${letter === "Alle" ? "bg-petrol text-white" : "bg-white border border-slate-200 text-slate-600"}`}>Alle</button>
           {alphabet.map((l) => {

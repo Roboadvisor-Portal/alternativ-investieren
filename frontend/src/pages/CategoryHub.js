@@ -87,6 +87,22 @@ export default function CategoryHub({ slug: slugProp }) {
           </aside>
         </div>
 
+        {/* Vertiefung / deep-dive editorial content */}
+        {cat.deepDive?.length > 0 && (
+          <section className="mt-14" data-testid="deep-dive">
+            <h2 className="mb-2 font-heading text-2xl font-bold tracking-tight text-petrol-dark sm:text-3xl">{cat.label} im Detail</h2>
+            <p className="mb-8 max-w-2xl text-sm text-slate-500">Vertiefende Aufklärung zu Funktionsweise, Kennzahlen und Vorgehen – für fundierte Entscheidungen.</p>
+            <div className="prose-editorial max-w-3xl">
+              {cat.deepDive.map((sec, i) => (
+                <div key={i}>
+                  <h3>{sec.h2}</h3>
+                  {sec.paragraphs.map((p, j) => <p key={j}>{p}</p>)}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* 3. Pro/Contra */}
         <section className="mt-14">
           <h2 className="mb-6 font-heading text-2xl font-bold tracking-tight text-petrol-dark sm:text-3xl">Vor- und Nachteile im Überblick</h2>
