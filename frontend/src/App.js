@@ -13,6 +13,8 @@ import SteuerRechner from "@/pages/rechner/SteuerRechner";
 import RatgeberList from "@/pages/RatgeberList";
 import RatgeberArticle from "@/pages/RatgeberArticle";
 import Glossar from "@/pages/Glossar";
+import WieWirBewerten from "@/pages/WieWirBewerten";
+import AnbieterDetail from "@/pages/AnbieterDetail";
 import Risikohinweise from "@/pages/Risikohinweise";
 import UeberUns from "@/pages/UeberUns";
 import Downloads from "@/pages/Downloads";
@@ -43,6 +45,8 @@ function App() {
             <Route path="/ratgeber/:slug" element={<RatgeberArticle />} />
             <Route path="/glossar/" element={<Glossar />} />
             <Route path="/glossar" element={<Glossar />} />
+            <Route path="/wie-wir-bewerten/" element={<WieWirBewerten />} />
+            <Route path="/anbieter/:slug" element={<AnbieterDetail />} />
             <Route path="/risikohinweise/" element={<Risikohinweise />} />
             <Route path="/ueber-uns/" element={<UeberUns />} />
             <Route path="/downloads/" element={<Downloads />} />

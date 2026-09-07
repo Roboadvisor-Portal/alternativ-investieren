@@ -13,10 +13,12 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const empty = {
-  name: "", logo_url: "", asset_classes: ["crowdlending"], min_investment: 100,
+  name: "", slug: "", logo_url: "", asset_classes: ["crowdlending"], min_investment: 100,
   return_min: 5, return_max: 8, return_period: "2020-2024", bafin_regulated: false,
-  regulation_note: "", term_min_months: 6, term_max_months: 36, risk_level: "orange",
-  secondary_market: false, countries: ["DE"], rating: 4, review_text: "", affiliate_url: "#", is_example: true,
+  regulation_note: "", regulation_tier: "tier2", term_min_months: 6, term_max_months: 36, risk_level: "orange",
+  secondary_market: false, countries: ["DE"], rating: 4, star_rating: 4,
+  trustpilot_score: null, trustpilot_count: null, trustpilot_url: "",
+  review_text: "", affiliate_url: "#", is_example: true,
 };
 
 export default function AdminDashboard() {
@@ -47,7 +49,10 @@ export default function AdminDashboard() {
       return_max: Number(form.return_max) || null,
       term_min_months: Number(form.term_min_months) || null,
       term_max_months: Number(form.term_max_months) || null,
-      rating: Number(form.rating) || null,
+      rating: Number(form.star_rating) || null,
+      star_rating: Number(form.star_rating) || null,
+      trustpilot_score: form.trustpilot_score ? Number(form.trustpilot_score) : null,
+      trustpilot_count: form.trustpilot_count ? Number(form.trustpilot_count) : null,
     };
     try {
       if (editing === "new") await api.post("/providers", payload);
@@ -140,6 +145,7 @@ export default function AdminDashboard() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <FormField label="Anbietername" className="col-span-2"><Input data-testid="form-name" value={form.name} onChange={(e) => set("name", e.target.value)} /></FormField>
+              <FormField label="Slug (URL, z. B. mintos)" className="col-span-2"><Input data-testid="form-slug" value={form.slug} onChange={(e) => set("slug", e.target.value)} placeholder="mintos" /></FormField>
               <FormField label="Logo-URL" className="col-span-2"><Input data-testid="form-logo" value={form.logo_url} onChange={(e) => set("logo_url", e.target.value)} placeholder="https://…" /></FormField>
               <FormField label="Anlageklassen" className="col-span-2">
                 <div className="flex gap-2">
@@ -166,6 +172,20 @@ export default function AdminDashboard() {
                 </Select>
               </FormField>
               <FormField label="Bewertung (0–5)"><Input type="number" step="0.1" value={form.rating} onChange={(e) => set("rating", e.target.value)} /></FormField>
+              <FormField label="Sterne-Bewertung (0–5, halbe möglich)"><Input data-testid="form-star" type="number" step="0.5" value={form.star_rating} onChange={(e) => set("star_rating", e.target.value)} /></FormField>
+              <FormField label="Regulierungs-Stufe">
+                <Select value={form.regulation_tier} onValueChange={(v) => set("regulation_tier", v)}>
+                  <SelectTrigger data-testid="form-tier"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="tier1">EU-Finanzlizenz + Anlegerentschädigung</SelectItem>
+                    <SelectItem value="tier2">ECSP-lizenziert</SelectItem>
+                    <SelectItem value="tier3">Unreguliert / eingeschränkt</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormField>
+              <FormField label="Trustpilot-Score (leer = kein Badge)"><Input data-testid="form-tp-score" type="number" step="0.1" value={form.trustpilot_score ?? ""} onChange={(e) => set("trustpilot_score", e.target.value)} /></FormField>
+              <FormField label="Trustpilot-Anzahl"><Input data-testid="form-tp-count" type="number" value={form.trustpilot_count ?? ""} onChange={(e) => set("trustpilot_count", e.target.value)} /></FormField>
+              <FormField label="Trustpilot-URL" className="col-span-2"><Input value={form.trustpilot_url} onChange={(e) => set("trustpilot_url", e.target.value)} placeholder="https://www.trustpilot.com/review/…" /></FormField>
               <FormField label="Regulierungshinweis" className="col-span-2"><Input value={form.regulation_note} onChange={(e) => set("regulation_note", e.target.value)} placeholder="z. B. ECSP-Lizenz (EU)" /></FormField>
               <FormField label="Affiliate-URL" className="col-span-2"><Input data-testid="form-affiliate" value={form.affiliate_url} onChange={(e) => set("affiliate_url", e.target.value)} placeholder="https://…" /></FormField>
               <FormField label="Kurzbewertung (redaktionell)" className="col-span-2"><Textarea data-testid="form-review" value={form.review_text} onChange={(e) => set("review_text", e.target.value)} rows={3} /></FormField>

@@ -104,6 +104,12 @@ class Provider(BaseModel):
     secondary_market: bool = False
     countries: List[str] = ["DE"]
     rating: Optional[float] = None            # 0-5
+    star_rating: Optional[float] = None       # redaktionelle Sterne 0-5 (halbe möglich)
+    trustpilot_score: Optional[float] = None
+    trustpilot_count: Optional[int] = None
+    trustpilot_url: Optional[str] = ""
+    regulation_tier: Optional[str] = "tier2"  # tier1|tier2|tier3
+    slug: Optional[str] = ""
     review_text: Optional[str] = ""
     affiliate_url: Optional[str] = "#"
     is_example: bool = True
@@ -127,6 +133,12 @@ class ProviderCreate(BaseModel):
     secondary_market: bool = False
     countries: List[str] = ["DE"]
     rating: Optional[float] = None
+    star_rating: Optional[float] = None
+    trustpilot_score: Optional[float] = None
+    trustpilot_count: Optional[int] = None
+    trustpilot_url: Optional[str] = ""
+    regulation_tier: Optional[str] = "tier2"
+    slug: Optional[str] = ""
     review_text: Optional[str] = ""
     affiliate_url: Optional[str] = "#"
     is_example: bool = True
@@ -218,34 +230,52 @@ app.add_middleware(
 )
 
 
+def P(name, slug, ac, mn, rmin, rmax, rp, bafin, regnote, tmin, tmax, risk, sec, countries, star, tp, tpc, tpurl, tier, review):
+    return {"name": name, "slug": slug, "logo_url": "", "asset_classes": ac, "min_investment": mn,
+            "return_min": rmin, "return_max": rmax, "return_period": rp, "bafin_regulated": bafin,
+            "regulation_note": regnote, "term_min_months": tmin, "term_max_months": tmax,
+            "risk_level": risk, "secondary_market": sec, "countries": countries, "rating": star,
+            "star_rating": star, "trustpilot_score": tp, "trustpilot_count": tpc, "trustpilot_url": tpurl,
+            "regulation_tier": tier, "review_text": review, "affiliate_url": "#", "is_example": True}
+
+
 SAMPLE_PROVIDERS = [
-    {
-        "name": "Beispiel-Plattform Alpha", "logo_url": "", "asset_classes": ["crowdlending"],
-        "min_investment": 25, "return_min": 6.0, "return_max": 9.5, "return_period": "2019-2024",
-        "bafin_regulated": False, "regulation_note": "ECSP-Lizenz (EU-Schwarmfinanzierungs-VO)",
-        "term_min_months": 6, "term_max_months": 36, "risk_level": "orange", "secondary_market": True,
-        "countries": ["DE", "AT"], "rating": 4.2,
-        "review_text": "Beispieldaten – redaktionelle Kurzbewertung wird später ergänzt. Diese Karte dient als Platzhalter für die spätere Anbieter-Befüllung.",
-        "affiliate_url": "#", "is_example": True,
-    },
-    {
-        "name": "Beispiel-Plattform Beta", "logo_url": "", "asset_classes": ["immobilien-crowdinvesting"],
-        "min_investment": 500, "return_min": 5.0, "return_max": 7.0, "return_period": "2020-2024",
-        "bafin_regulated": True, "regulation_note": "Vermögensanlagengesetz / BaFin-gebilligter VIB",
-        "term_min_months": 12, "term_max_months": 48, "risk_level": "orange", "secondary_market": False,
-        "countries": ["DE"], "rating": 3.9,
-        "review_text": "Beispieldaten – redaktionelle Kurzbewertung wird später ergänzt. Diese Karte dient als Platzhalter für die spätere Anbieter-Befüllung.",
-        "affiliate_url": "#", "is_example": True,
-    },
-    {
-        "name": "Beispiel-Plattform Gamma", "logo_url": "", "asset_classes": ["crowdlending", "immobilien-crowdinvesting"],
-        "min_investment": 100, "return_min": 4.5, "return_max": 8.0, "return_period": "2018-2024",
-        "bafin_regulated": False, "regulation_note": "ECSP-Lizenz (EU)",
-        "term_min_months": 3, "term_max_months": 60, "risk_level": "yellow", "secondary_market": True,
-        "countries": ["DE", "AT", "CH"], "rating": 4.5,
-        "review_text": "Beispieldaten – redaktionelle Kurzbewertung wird später ergänzt. Diese Karte dient als Platzhalter für die spätere Anbieter-Befüllung.",
-        "affiliate_url": "#", "is_example": True,
-    },
+    P("Debitum Investments", "debitum", ["crowdlending"], 10, 8, 15, "hist. Ø ~12–12,8 %", False,
+      "MiFID-II, Latvijas Banka, Lizenz 06.06.08.728/537", 3, 12, "yellow", False, ["LV", "EE", "GB", "ES"],
+      4.5, 4.0, 134, "https://www.trustpilot.com/review/debitum.investments", "tier1",
+      "Besicherte P2B-Unternehmenskredite, MiFID-II-reguliert mit Anlegerentschädigung bis 20.000 €. Laut Anbieter praktisch keine Ausfälle. Kein Sekundärmarkt."),
+    P("Viainvest", "viainvest", ["crowdlending"], 10, 10, 13, "seit 2016", False,
+      "IBF-Lizenz, Latvijas Banka, MiFID-II", 1, 12, "yellow", True, ["LV", "CZ", "RO"],
+      3.5, 2.8, 53, "https://www.trustpilot.com/review/viainvest.com", "tier1",
+      "Kurzfristige Konsumkredite der VIA SMS Group mit Rückkauf- und Konzerngarantie. Sekundärmarkt vorhanden. Klumpenrisiko durch Konzernbindung."),
+    P("Mintos", "mintos", ["crowdlending"], 5, 9, 14, "seit 2015", False,
+      "MiFID-II, Latvijas Banka, Anlegerentschädigung bis 20.000 €", 1, 36, "yellow", True, ["LV", "EU"],
+      4.5, 3.9, 4500, "https://www.trustpilot.com/review/mintos.com", "tier1",
+      "Größter P2P-Marktplatz Europas, über 80 Kreditanbahner, hohe Transparenz (Mintos-Score). Bruttorenditen vor Ausfällen; nicht jeder Kredit mit Rückkauf."),
+    P("Lendermarket", "lendermarket", ["crowdlending"], 10, 13, 18, "Ø ~13,5 %", False,
+      "ECSP-Lizenz, Central Bank of Ireland (seit 12/2024)", 1, 84, "orange", False, ["EE", "ES", "EU"],
+      3.5, 4.0, 718, "https://www.trustpilot.com/review/lendermarket.com", "tier2",
+      "Creditstar-Plattform, seit 12/2024 ECSP-lizenziert. Wichtig: Liquiditätskrise 2022–2024 (Pending Payments), laut Anbieter 10/2025 vollständig beglichen. Klumpenrisiko Creditstar."),
+    P("Maclear", "maclear", ["crowdlending"], 50, 14, 15.6, "seit 2023", False,
+      "Schweizer AG, SRO PolyReg (nur indirekte FINMA-Aufsicht)", 3, 18, "red", False, ["CH", "EE", "EU"],
+      3.0, 4.6, 660, "https://www.trustpilot.com/review/maclear.ch", "tier3",
+      "Junge P2B-Plattform mit hohen Renditen. Nur SRO-Mitgliedschaft statt echter Finanzlizenz, keine Rückkaufgarantie, keine geprüften Geschäftsberichte, erster Ausfall 2025 dokumentiert."),
+    P("LetsInvest", "letsinvest", ["immobilien-crowdinvesting"], 500, 10, 12.5, "hist. ~10–10,5 %", False,
+      "ECSP-Lizenz, Bank von Litauen (Bezüge CNMV/CMVM)", 12, 18, "yellow", False, ["LT", "ES", "PT"],
+      4.0, None, None, "", "tier2",
+      "Konservativ aufgestelltes Immobilien-Crowdinvesting: ~95 % erstrangig besichert, LTV max. 70–75 %, seit 2020 kein Zahlungsverzug bei ~129 Mio. € Volumen. Keine Trustpilot-Daten."),
+    P("Stock.estate", "stock-estate", ["immobilien-crowdinvesting"], 500, 12, 18, "seit 2023/24", False,
+      "ECSP-Lizenz, ASF Rumänien, Lizenz PJR28FSFPR/400002", 6, 18, "orange", False, ["RO", "PT"],
+      3.5, 4.6, 19, "https://www.trustpilot.com/review/stock.estate", "tier2",
+      "Grundpfandbesicherte Immobilienkredite (~150 % Besicherung), hohe Bruttorenditen. Starke Länderkonzentration Rumänien, junger Track Record. Gebühren mindern Bruttorendite."),
+    P("Fintown", "fintown", ["immobilien-crowdinvesting"], 100, 8, 15, "seit 2022/23", False,
+      "Unreguliert – keine Finanzaufsichtslizenz", 6, 24, "red", False, ["CZ"],
+      2.5, None, None, "", "tier3",
+      "Miet- und Entwicklungsprojekte der Vihorev-Gruppe in Prag. Unreguliert, keine Grundpfand-/Rückkaufsicherung Dritter. Interessenkonflikt: CEO = Garantiegeber. Ausstiegsgebühr bis 30 %."),
+    P("Crowdpear", "crowdpear", ["immobilien-crowdinvesting"], 100, 10.5, 14, "seit 2023", False,
+      "ECSP-Lizenz, Zentralbank Litauens (seit 07/2023)", 6, 24, "yellow", True, ["LT", "RO"],
+      4.0, 4.3, 31, "https://www.trustpilot.com/review/crowdpear.com", "tier2",
+      "PeerBerry-Spin-off, erstrangig hypothekenbesichert, konservativer Ø-LTV 58,4 %. Niedrige Ausfallquoten, Sekundärmarkt vorhanden. Junger Track Record, Fokus Litauen."),
 ]
 
 
@@ -269,13 +299,14 @@ async def startup():
         await db.users.update_one({"email": admin_email}, {"$set": {"password_hash": hash_password(admin_password)}})
         logger.info("Admin password updated.")
 
-    # Seed sample providers (only if none exist)
-    count = await db.providers.count_documents({})
-    if count == 0:
+    # Seed sample providers (reseed if the new dataset is not yet present)
+    has_mintos = await db.providers.find_one({"slug": "mintos"})
+    if has_mintos is None:
+        await db.providers.delete_many({"is_example": True})
         for p in SAMPLE_PROVIDERS:
             provider = Provider(**p)
             await db.providers.insert_one(provider.model_dump())
-        logger.info("Sample providers seeded.")
+        logger.info("Sample providers reseeded (9 real profiles).")
 
 
 @app.on_event("shutdown")

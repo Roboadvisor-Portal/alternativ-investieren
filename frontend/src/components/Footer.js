@@ -24,6 +24,7 @@ const cols = [
     links: [
       { to: "/ratgeber/", label: "Ratgeber / Magazin" },
       { to: "/glossar/", label: "Glossar" },
+      { to: "/wie-wir-bewerten/", label: "Wie wir bewerten" },
       { to: "/downloads/", label: "Downloads & Checklisten" },
       { to: "/ueber-uns/", label: "Über uns" },
     ],

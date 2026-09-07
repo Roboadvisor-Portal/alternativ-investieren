@@ -1,24 +1,25 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { api } from "@/lib/api";
-import { AnbieterCard, fmtEuro, fmtTerm, assetLabels } from "@/components/AnbieterCard";
+import { AnbieterCard, fmtEuro, fmtTerm, assetLabels, StarRating, TrustpilotBadge, TierBadge } from "@/components/AnbieterCard";
 import { RiskAmpel, AffiliateNotice, AdLabel } from "@/components/Trust";
-import { ArrowUpDown, SlidersHorizontal, ExternalLink, PackageOpen } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowUpDown, SlidersHorizontal, ExternalLink, PackageOpen, Info } from "lucide-react";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 
 const sortOptions = [
+  { value: "star_desc", label: "Sterne-Bewertung (beste zuerst)" },
   { value: "return_desc", label: "Rendite (hoch → niedrig)" },
   { value: "return_asc", label: "Rendite (niedrig → hoch)" },
   { value: "min_asc", label: "Mindestanlage (aufsteigend)" },
   { value: "min_desc", label: "Mindestanlage (absteigend)" },
-  { value: "rating_desc", label: "Bewertung (beste zuerst)" },
 ];
 
 export function ProviderComparison({ category }) {
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sort, setSort] = useState("return_desc");
+  const [sort, setSort] = useState("star_desc");
   const [minFilter, setMinFilter] = useState("all");
   const [regFilter, setRegFilter] = useState("all");
   const [riskFilter, setRiskFilter] = useState("all");
@@ -50,7 +51,8 @@ export function ProviderComparison({ category }) {
       case "return_asc": list.sort((a, b) => num(a.return_min, 999) - num(b.return_min, 999)); break;
       case "min_asc": list.sort((a, b) => num(a.min_investment, Infinity) - num(b.min_investment, Infinity)); break;
       case "min_desc": list.sort((a, b) => num(b.min_investment, -1) - num(a.min_investment, -1)); break;
-      case "rating_desc": list.sort((a, b) => num(b.rating, -1) - num(a.rating, -1)); break;
+      case "rating_desc": list.sort((a, b) => num(b.star_rating, -1) - num(a.star_rating, -1)); break;
+      case "star_desc": list.sort((a, b) => num(b.star_rating, -1) - num(a.star_rating, -1)); break;
       default: break;
     }
     return list;
@@ -58,7 +60,9 @@ export function ProviderComparison({ category }) {
 
   return (
     <div data-testid="provider-comparison">
-      <AffiliateNotice className="mb-6" />
+      <AffiliateNotice className="mb-4" />
+      <Link to="/wie-wir-bewerten/" data-testid="comparison-methodology-link" className="mb-6 inline-flex items-center gap-1.5 text-sm font-semibold text-cta hover:text-cta-hover">
+        <Info className="h-4 w-4" aria-hidden="true" /> Wie bewerten wir? Unsere Bewertungsmethodik</Link>
 
       <div className="mb-6 flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200 bg-white p-4">
         <div className="flex items-center gap-2 text-sm font-semibold text-petrol-dark">
@@ -109,15 +113,19 @@ export function ProviderComparison({ category }) {
                   <tr key={p.id} data-testid={`provider-row-${p.id}`} className="hover:bg-sand/50">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2 font-semibold text-petrol-dark">
-                        {p.name}
-                        {p.is_example && <span className="rounded bg-yellow-100 px-1 py-0.5 text-[9px] font-bold uppercase text-yellow-800">Beispiel</span>}
+                        <Link to={`/anbieter/${p.slug}`} className="hover:text-cta">{p.name}</Link>
                       </div>
+                      <div className="mt-1 flex items-center gap-2">
+                        <StarRating value={p.star_rating} size="h-3 w-3" />
+                        <span className="num text-[11px] text-slate-500">{p.star_rating?.toFixed(1)}</span>
+                      </div>
+                      <div className="mt-1"><TrustpilotBadge score={p.trustpilot_score} count={p.trustpilot_count} url={p.trustpilot_url} /></div>
                     </td>
                     <td className="px-4 py-3 text-xs">{p.asset_classes.map((a) => assetLabels[a] || a).join(", ")}</td>
                     <td className="num px-4 py-3 font-semibold">{p.return_min != null ? `${p.return_min}\u2013${p.return_max} %` : "–"}</td>
                     <td className="num px-4 py-3">{fmtEuro(p.min_investment)}</td>
                     <td className="num px-4 py-3">{fmtTerm(p.term_min_months, p.term_max_months)}</td>
-                    <td className="px-4 py-3 text-xs">{p.bafin_regulated ? "BaFin" : "EU-ECSP"}</td>
+                    <td className="px-4 py-3"><TierBadge tier={p.regulation_tier} /></td>
                     <td className="px-4 py-3"><RiskAmpel level={p.risk_level} /></td>
                     <td className="px-4 py-3">
                       <a href={p.affiliate_url || "#"} target="_blank" rel="sponsored noopener noreferrer" data-testid={`provider-cta-button-${p.id}`} className="inline-flex items-center gap-1 rounded-lg bg-cta px-3 py-1.5 text-xs font-semibold text-white hover:bg-cta-hover">

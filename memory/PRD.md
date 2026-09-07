@@ -38,5 +38,16 @@ Deutschsprachiges Aufklärungs- und Vergleichsportal zu alternativen Investmentf
 - P2: Auth-Hardening (Brute-Force-Lockout, explizite CORS-Origins in Produktion).
 - P2: Download-Dateien (Checklisten/PDF) erstellen und verlinken.
 
+## Anbieter-Vergleich (erledigt)
+- 9 reale Anbieter geseedet (5 Crowdlending, 4 Immobilien) mit Sterne-Bewertung, Trustpilot, 3-Stufen-Regulierungs-Badge.
+- AnbieterCard erweitert, Sortierung nach Sternen, Detailseiten /anbieter/{slug} mit Volltext, Seite /wie-wir-bewerten/.
+- Admin-Formular um star_rating/trustpilot/regulation_tier/slug erweitert.
+
+## Teil 2 — vom Nutzer bestätigt, NOCH ZU BAUEN (nächstes Arbeitspaket)
+- P0: Emergent-managed Google Auth fürs Admin (Playbook + Flow in /app/auth_testing.md). E-Mail-Allowlist = ADMIN_EMAIL. JWT-Login danach entfernen/ersetzen.
+- P0: Blog-CMS im Admin: 3 bestehende Launch-Artikel nach MongoDB migrieren + CRUD inkl. SEO-Meta (title/description/slug/tags). articles.js -> DB.
+- P1: KI-Bildgenerierung im CMS über Emergent-Universal-Key (Beitragsbilder). integration_expert für Bild-Gen-Playbook holen, Key via emergent_integrations_manager.
+- Hinweis: Provider-CRUD & Blog-CRUD über dieselbe (Google-)Auth schützen.
+
 ## Next Tasks
-- Anbieter befüllen, Deployment mit Pre-Rendering evaluieren.
+- Teil 2 umsetzen (Google Auth zuerst, dann Blog-CMS, dann KI-Bilder). Deployment mit Pre-Rendering evaluieren.

@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { RiskAmpel, AdLabel } from "@/components/Trust";
-import { Star, ExternalLink, Info, ShieldCheck, Wallet, Clock, Repeat } from "lucide-react";
+import { Star, StarHalf, ExternalLink, Info, ShieldCheck, Wallet, Clock, Repeat } from "lucide-react";
+import { tierLabels } from "@/data/providerDetails";
 import {
   Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
 } from "@/components/ui/tooltip";
@@ -36,6 +38,41 @@ function ReturnDisclaimer() {
   );
 }
 
+export function StarRating({ value, size = "h-4 w-4" }) {
+  const full = Math.floor(value);
+  const half = value - full >= 0.5;
+  return (
+    <span className="inline-flex items-center gap-0.5" aria-label={`${value} von 5 Sternen`}>
+      {[1, 2, 3, 4, 5].map((n) => {
+        if (n <= full) return <Star key={n} className={`${size} fill-cta-gold text-cta-gold`} aria-hidden="true" />;
+        if (n === full + 1 && half) return <StarHalf key={n} className={`${size} fill-cta-gold text-cta-gold`} aria-hidden="true" />;
+        return <Star key={n} className={`${size} text-slate-300`} aria-hidden="true" />;
+      })}
+    </span>
+  );
+}
+
+export function TrustpilotBadge({ score, count, url, className = "" }) {
+  if (!score || !count) return null;
+  const inner = (
+    <span className={`inline-flex items-center gap-1.5 rounded-md border border-[#00b67a]/40 bg-[#00b67a]/10 px-2 py-1 text-xs ${className}`}>
+      <Star className="h-3.5 w-3.5 fill-[#00b67a] text-[#00b67a]" aria-hidden="true" />
+      <span className="font-bold text-[#00734a]">{score.toFixed(1)}</span>
+      <span className="text-slate-500">Trustpilot · {count}</span>
+    </span>
+  );
+  return url ? <a href={url} target="_blank" rel="noopener noreferrer" data-testid="trustpilot-badge">{inner}</a> : inner;
+}
+
+export function TierBadge({ tier }) {
+  const t = tierLabels[tier] || tierLabels.tier2;
+  return (
+    <span data-testid={`tier-badge-${tier}`} className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold ${t.color}`}>
+      <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />{t.label}
+    </span>
+  );
+}
+
 export function AnbieterCard({ provider }) {
   const p = provider;
   return (
@@ -60,7 +97,9 @@ export function AnbieterCard({ provider }) {
             </div>
           )}
           <div className="min-w-0">
-            <h3 className="truncate font-heading text-base font-bold text-petrol-dark">{p.name}</h3>
+            <h3 className="truncate font-heading text-base font-bold text-petrol-dark">
+              {p.slug ? <Link to={`/anbieter/${p.slug}`} className="hover:text-cta">{p.name}</Link> : p.name}
+            </h3>
             <div className="mt-1 flex flex-wrap gap-1">
               {p.asset_classes.map((a) => (
                 <span key={a} className="rounded bg-petrol/10 px-1.5 py-0.5 text-[10px] font-semibold text-petrol">{assetLabels[a] || a}</span>
@@ -68,6 +107,20 @@ export function AnbieterCard({ provider }) {
             </div>
           </div>
         </div>
+
+        {/* Regulierungs-Stufe */}
+        <div className="mt-3"><TierBadge tier={p.regulation_tier} /></div>
+
+        {/* Redaktionelle Sterne-Bewertung */}
+        {p.star_rating != null && (
+          <div className="mt-3 flex items-center gap-2" data-testid={`star-rating-${p.id}`}>
+            <StarRating value={p.star_rating} />
+            <span className="num text-xs font-bold text-petrol-dark">{p.star_rating.toFixed(1)}/5</span>
+            <Link to="/wie-wir-bewerten/" data-testid="how-we-rate-link" className="inline-flex items-center gap-0.5 text-[11px] text-slate-400 hover:text-petrol">
+              <Info className="h-3 w-3" aria-hidden="true" /> Wie bewerten wir?
+            </Link>
+          </div>
+        )}
 
         <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
           <div>
@@ -104,14 +157,9 @@ export function AnbieterCard({ provider }) {
 
         {p.review_text && <p className="mt-3 text-xs leading-relaxed text-slate-600">{p.review_text}</p>}
 
-        {p.rating != null && (
-          <div className="mt-3 flex items-center gap-1">
-            {[1, 2, 3, 4, 5].map((n) => (
-              <Star key={n} className={`h-3.5 w-3.5 ${n <= Math.round(p.rating) ? "fill-cta-gold text-cta-gold" : "text-slate-300"}`} aria-hidden="true" />
-            ))}
-            <span className="num ml-1 text-xs font-semibold text-slate-500">{p.rating.toFixed(1)}</span>
-          </div>
-        )}
+        <div className="mt-3">
+          <TrustpilotBadge score={p.trustpilot_score} count={p.trustpilot_count} url={p.trustpilot_url} />
+        </div>
       </div>
 
       <div className="mt-auto border-t border-slate-100 p-4">
