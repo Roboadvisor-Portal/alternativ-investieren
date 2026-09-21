@@ -25,7 +25,7 @@ Starte einen **neuen „Full Stack App"-Job** und füge als allererste Nachricht
 > - Importiere die Inhalte aus `migration/data/` (`articles.json`, `providers.json`) in MongoDB.
 > - Baue das Frontend als **Next.js** neu, exakt nach dem Design und den Inhalten in `migration/frontend-source/` (gleiche Seiten, gleiche Texte, gleiches Farb-/Schriftkonzept).
 > - Sorge dafür, dass öffentliche Seiten **vollständig serverseitig als HTML** ausgeliefert werden und dass **beim Veröffentlichen/Bearbeiten eines Artikels im Admin automatisch die betroffene Seite neu vorgerendert wird** (on-demand Revalidation).
-> - Behalte das JWT/Passwort-Admin-Login vorerst bei (Google Auth ist optionaler Backlog).
+> - Das **Admin-Dashboard-Login** soll über **Emergent Google Login** laufen und **ausschließlich für die E-Mail `managerprofi8@googlemail.com`** freigeschaltet sein (Allowlist – alle anderen Google-Accounts werden abgewiesen). Kein Passwort-Login. Details siehe `migration/MIGRATION_GUIDE.md`, Abschnitt 7.
 >
 > Beginne damit, mir eine kurze Umsetzungs-Reihenfolge zu bestätigen, und baue dann los.
 

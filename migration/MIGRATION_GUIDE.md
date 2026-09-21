@@ -110,14 +110,22 @@ Admin (JWT-geschützt): `/admin/login`, `/admin` (Anbieter-Verwaltung), `/admin/
 - **ISR/Revalidate bei Publish**: nach `POST/PUT` eines Artikels die Route `/ratgeber/[slug]` und `/ratgeber` revalidieren.
 
 ## 7. Integrationen & ENV
-- **JWT/Passwort-Admin** (bestehend). ENV: `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `JWT_SECRET`.
+- **Admin-Login: Emergent-managed Google Auth (GEWÜNSCHT, primär).** Der Dashboard-Login soll über
+  **Emergent Google Login** laufen, NICHT über Passwort. Zugang per **Allowlist auf genau eine E-Mail beschränken:
+  `managerprofi8@googlemail.com`** — nur dieser Google-Account darf sich einloggen und das CMS (Anbieter + Artikel)
+  bearbeiten; alle anderen Google-Accounts werden nach dem Login mit einer klaren Meldung abgewiesen.
+  Umsetzung über die Emergent-Google-Auth-Integration (Integration-Playbook im neuen Projekt anfordern):
+  Session-Token serverseitig prüfen, `email` gegen die Allowlist matchen, geschützte `/api`-Admin-Routen
+  und die Admin-Seiten `/admin` + `/admin/artikel` nur für diese E-Mail zulassen.
+- Das bestehende JWT/Passwort-Backend aus `backend-source/server.py` kann als Referenz dienen; die
+  Admin-Autorisierung (Bearer-Dependency `get_current_user`) durch die Google-Session-Prüfung ersetzen.
+- ENV (Alt-Referenz, JWT): `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `JWT_SECRET`.
 - **Emergent Universal Key** für KI-Bilder: ENV `EMERGENT_LLM_KEY`; Bibliothek `emergentintegrations`
   (`pip install emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/`),
   Modell `gemini-3.1-flash-image-preview`, Ausgabe → **Emergent Object Storage** (public serve via `/api/media`).
 - **MongoDB**: ENV `MONGO_URL`, `DB_NAME`.
 - Frontend-URL für API im Next.js über `NEXT_PUBLIC_*` bzw. serverseitig direkt Backend/Mongo.
-- **Optional/Backlog (vom Nutzer gewünscht, war noch offen):** Emergent-managed **Google Auth** fürs Admin
-  (statt/zusätzlich zu JWT), Allowlist auf die Nutzer-E-Mail.
+- **Optional/Backlog:** —
 
 ## 8. Rechtliche/redaktionelle Pflichten (unbedingt erhalten)
 - Affiliate sichtbar als „Werbung/Partnerlink" kennzeichnen; CTA-Links `rel="sponsored"`.
