@@ -1,0 +1,220 @@
+{
+  "project_info": {
+    "domain": "alternativ-investieren.com",
+    "portal_title": "Alternativ Investieren DACH — Das unabhängige Fachportal für Crowdlending & Immobilien-Crowdinvesting",
+    "target_audience": "Private and semi-institutional investors in Germany, Austria, and Switzerland (DACH region)",
+    "app_type": "hybrid_fullstack",
+    "language": "de-DE",
+    "current_year": "2026"
+  },
+  "typography": {
+    "font_family_headings": "Cabinet Grotesk, Cormorant Garamond, serif, sans-serif",
+    "font_family_body": "Manrope, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    "font_family_mono": "JetBrains Mono, 'Fira Code', monospace",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100",
+      "h3": "text-xl sm:text-2xl font-semibold tracking-normal text-slate-800 dark:text-slate-200",
+      "h4": "text-lg sm:text-xl font-medium text-slate-800 dark:text-slate-200",
+      "body_lg": "text-lg text-slate-700 dark:text-slate-300 leading-relaxed",
+      "body_base": "text-base text-slate-600 dark:text-slate-400 leading-relaxed",
+      "body_sm": "text-sm text-slate-500 dark:text-slate-400 leading-normal",
+      "caption": "text-xs font-medium tracking-wider uppercase text-slate-500 dark:text-slate-400"
+    },
+    "font_rules": [
+      "Headings MUST use Cabinet Grotesk or Cormorant Garamond with tight letter-spacing (tracking-tight)",
+      "Financial data points, yield numbers, minimum investment amounts, and calculator outputs MUST use JetBrains Mono for numerical alignment and clarity",
+      "Long editorial reading blocks MUST maintain leading-relaxed with max-w-3xl line lengths for optimal legibility",
+      "NEVER use Inter or standard Arial for main article titles"
+    ]
+  },
+  "colors": {
+    "primary_petrol_dark": "#0B252C",
+    "primary_petrol_medium": "#133E46",
+    "primary_petrol_light": "#1D5B67",
+    "background_light": "#F7F8F6",
+    "background_card_light": "#FFFFFF",
+    "background_dark": "#07181C",
+    "background_card_dark": "#0E2328",
+    "text_primary_light": "#0F172A",
+    "text_secondary_light": "#475569",
+    "text_primary_dark": "#F8FAFC",
+    "text_secondary_dark": "#94A3B8",
+    "accent_amber_cta": "#C2610C",
+    "accent_amber_cta_hover": "#A14E07",
+    "accent_gold_highlight": "#D97706",
+    "border_subtle_light": "#E2E8F0",
+    "border_subtle_dark": "#1E3840",
+    "risk_traffic_light": {
+      "low_risk_green": {
+        "bg": "#DCFCE7",
+        "text": "#15803D",
+        "border": "#86EFAC",
+        "badge": "Geringes Risiko / Besichert"
+      },
+      "moderate_risk_yellow": {
+        "bg": "#FEF9C3",
+        "text": "#A16207",
+        "border": "#FDE047",
+        "badge": "Moderate Risikoklasse"
+      },
+      "elevated_risk_orange": {
+        "bg": "#FFEDD5",
+        "text": "#C2410C",
+        "border": "#FDBA74",
+        "badge": "Erhöhtes Nachrang-Risiko"
+      },
+      "high_risk_red": {
+        "bg": "#FEE2E2",
+        "text": "#B91C1C",
+        "border": "#FCA5A5",
+        "badge": "Hohes Verlustrisiko (Ausfall bis 100%)"
+      }
+    },
+    "rules": [
+      "NO harsh full black #000000; use rich deep petrol dark #0B252C / #07181C instead",
+      "Primary CTAs use warm muted amber/ochre #C2610C with strong contrasting text for trustworthy impact without neon distraction",
+      "Affiliate links and editorial disclaimers must present low-contrast slate gray badges with clear hover tooltips"
+    ]
+  },
+  "layout_and_spacing": {
+    "container_padding": "px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto",
+    "section_spacing": "py-12 sm:py-16 lg:py-24",
+    "bento_grid_protocol": {
+      "mode": "Swiss High-Density Editorial & Data Grid",
+      "gap": "gap-6 sm:gap-8",
+      "hero_span": "col-span-12 lg:col-span-8",
+      "sidebar_span": "col-span-12 lg:col-span-4",
+      "card_padding": "p-6 sm:p-8"
+    },
+    "rules": [
+      "Sticky header must use backdrop-blur-md bg-white/90 dark:bg-[#0B252C]/90 z-50 with shadow-sm",
+      "All card surfaces with borders MUST have at least p-6 internal padding",
+      "Mobile view of provider tables automatically switches to stacked responsive card layout with full data parity"
+    ]
+  },
+  "trust_and_editorial_elements": {
+    "editorial_verified_badge": {
+      "label": "Redaktionell geprüft",
+      "date": "Stand: Juli 2026",
+      "icon": "ShieldCheck",
+      "style": "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/50"
+    },
+    "affiliate_transparency_notice": {
+      "headline": "Transparenzhinweis & Werbekennzeichnung",
+      "body": "Unsere Vergleiche sind redaktionell unabhängig. Einige Links in diesem Vergleich sind Affiliate-Links. Wenn Sie darüber ein Konto eröffnen, erhalten wir eine kleine Provision ohne Mehrkosten für Sie.",
+      "style": "bg-slate-50 dark:bg-[#0E2328] border-l-4 border-amber-600 p-4 rounded-r-lg text-xs leading-relaxed"
+    },
+    "risk_disclaimer_banner": {
+      "body": "Risikohinweis: Investitionen in Crowdlending und Immobilien-Crowdinvesting beinhalten ein erhebliches Risiko bis hin zum Totalverlust des eingesetzten Kapitals. Keine Anlageberatung im Sinne des WpHG.",
+      "style": "bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 text-amber-900 dark:text-amber-200 p-4 rounded-xl text-xs font-medium"
+    }
+  },
+  "key_components_architecture": {
+    "header": {
+      "path": "src/components/Header.js",
+      "features": [
+        "Sticky glassmorphic navbar with logo",
+        "Category dropdown menu (Crowdlending, Immobilien-Crowdinvesting)",
+        "Calculators dropdown menu (Rendite-Rechner, Diversifikation, Steuer DACH)",
+        "Live instant search modal with keyboard shortcut support (Cmd+K / Ctrl+K)",
+        "DACH region selector (DE / AT / CH)"
+      ]
+    },
+    "provider_comparison_table": {
+      "path": "src/components/ProviderComparison.js",
+      "features": [
+        "Desktop multi-column comparison table vs Mobile stacked card view",
+        "Real-time filter controls (Min. Investment, Asset Class, Risk Level, Country, Secondary Market)",
+        "Dynamic sorting by Average Return (Rendite-Spanne), User Rating, Min Investment, BaFin/ECSP Licensed",
+        "Key statistics: Return range, Minimum deposit, Term duration, Buyback/Secondary market, Regulatory license badge",
+        "Direct CTA button with data-testid='provider-cta-button-{id}'"
+      ]
+    },
+    "calculators": {
+      "rendite_szenario_rechner": {
+        "path": "src/components/calculators/YieldCalculator.js",
+        "features": [
+          "Interactive input slider for Investment amount (€500 - €100,000)",
+          "Duration slider (1 - 10 years) & Expected Annual Interest Rate (3% - 12%)",
+          "Default & reinvestment loss sensitivity toggle (0% to 3% default rate model)",
+          "Dynamic visual outcome chart (Compound growth vs default buffer)"
+        ]
+      },
+      "diversifikations_rechner": {
+        "path": "src/components/calculators/DiversificationCalculator.js",
+        "features": [
+          "Portfolio distribution input across 1-20 project loans",
+          "Calculates Risk-Concentration Score & Herfindahl Index",
+          "Actionable recommendations to minimize single-project default impact"
+        ]
+      },
+      "steuer_rechner_dach": {
+        "path": "src/components/calculators/TaxCalculatorDACH.js",
+        "features": [
+          "Country toggle (Germany: Abgeltungsteuer 25% + Soli + Kirchensteuer; Austria: KESt 27.5%; Switzerland: Verrechnungssteuer 35% / Einkommensteuer)",
+          "Freibetrag / Sparer-Pauschbetrag calculator (€1.000 single / €2.000 married DE)",
+          "Net yield after tax calculation breakdown"
+        ]
+      }
+    },
+    "data_visualizations": {
+      "path": "src/components/charts/MarketDataCharts.js",
+      "features": [
+        "Historical DACH Crowdinvesting Market Volume Bar Chart (Recharts / Canvas)",
+        "Asset class average yield comparison radar or grouped bar chart",
+        "Risiko-Ampel interactive visual indicator card"
+      ]
+    },
+    "guide_and_glossary": {
+      "path": "src/components/GuideAndGlossary.js",
+      "features": [
+        "Comprehensive full-text guide articles with table of contents and reading progress bar",
+        "Author profile box with financial background credentials",
+        "Categorized glossary list (ECSP-Verordnung, Nachrangdarlehen, LTV, Annuitäten-Kredit, Zweitmarkt, Ausfallrate)",
+        "Interactive alphabetical filter for glossary terms"
+      ]
+    }
+  },
+  "media_assets": {
+    "image_urls": [
+      {
+        "category": "Hero / Real Estate Crowdinvesting",
+        "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Moderne Architektur und Wohnimmobilie in Deutschland für Immobilien-Crowdinvesting"
+      },
+      {
+        "category": "Financial Analysis / Data",
+        "url": "https://images.unsplash.com/photo-1591696205602-2f950c417cb9?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Datenanalyse und Renditeentwicklung auf Chart-Display"
+      },
+      {
+        "category": "Editorial / Commercial Real Estate",
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Hochwertiges modernes Gewerbe- und Wohngebäude"
+      },
+      {
+        "category": "Market Trends & Growth",
+        "url": "https://images.unsplash.com/photo-1543286386-2e659306cd6c?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Finanzanalyse und Wachstumsstatistik auf Papier und Tablet"
+      }
+    ]
+  },
+  "testing_and_accessibility_requirements": {
+    "data_testid_convention": "All interactive elements, buttons, input sliders, filter toggles, provider cards, search inputs, calculator buttons, and modals MUST feature strict data-testid attributes in kebab-case (e.g. data-testid='provider-filter-min-investment', data-testid='yield-calculator-submit-button', data-testid='search-input')",
+    "accessibility_rules": [
+      "Ensure contrast ratio >= 4.5:1 for standard text against light and dark petrol surfaces",
+      "All icons used purely decoratively must have aria-hidden='true'",
+      "Form input controls in calculators must have explicitly associated <label> elements",
+      "Focus outline indicator must be clearly visible (ring-2 ring-amber-500 ring-offset-2)"
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Build a robust, fully-functional German financial comparison portal and educational hub for alternativ-investieren.com",
+    "Implement clear navigation tabs / pages: Home Hub, Crowdlending Comparison, Immobilien-Crowdinvesting Comparison, Rechner-Hub (Yield, Diversification, Tax), Ratgeber/Blog, Glossar, Risikohinweis & Impressum",
+    "Ensure calculators feature interactive sliders, instant chart updates, methodology expandable drawers, and DACH tax specificity",
+    "Integrate dynamic filtering, searching, and sorting across all platform providers",
+    "Use Lucide-React icons extensively for financial metrics, risk traffic lights, and trust badges",
+    "Maintain strict adherence to data-testid attributes across all interactive components for automated verification"
+  ]
+}

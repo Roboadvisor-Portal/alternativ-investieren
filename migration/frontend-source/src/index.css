@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 100 11% 97%;
+        --foreground: 222 47% 11%;
+        --card: 0 0% 100%;
+        --card-foreground: 222 47% 11%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222 47% 11%;
+        --primary: 189 57% 18%;
+        --primary-foreground: 0 0% 98%;
+        --secondary: 100 8% 93%;
+        --secondary-foreground: 189 57% 18%;
+        --muted: 100 8% 93%;
+        --muted-foreground: 215 16% 47%;
+        --accent: 189 30% 92%;
+        --accent-foreground: 189 57% 18%;
+        --destructive: 0 72% 45%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 214 20% 90%;
+        --input: 214 20% 90%;
+        --ring: 28 88% 40%;
+        --chart-1: 189 57% 25%;
+        --chart-2: 28 88% 45%;
+        --chart-3: 189 40% 45%;
+        --chart-4: 43 74% 55%;
+        --chart-5: 152 55% 40%;
+        --radius: 0.75rem;
+    }
+    .dark {
+        --background: 194 60% 7%;
+        --foreground: 210 40% 98%;
+        --card: 190 43% 10%;
+        --card-foreground: 210 40% 98%;
+        --popover: 190 43% 10%;
+        --popover-foreground: 210 40% 98%;
+        --primary: 189 45% 55%;
+        --primary-foreground: 194 60% 7%;
+        --secondary: 190 30% 16%;
+        --secondary-foreground: 210 40% 98%;
+        --muted: 190 30% 16%;
+        --muted-foreground: 215 20% 65%;
+        --accent: 190 30% 18%;
+        --accent-foreground: 210 40% 98%;
+        --destructive: 0 62% 45%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 190 30% 20%;
+        --input: 190 30% 20%;
+        --ring: 28 88% 50%;
+        --chart-1: 189 45% 55%;
+        --chart-2: 28 88% 55%;
+        --chart-3: 189 40% 65%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 152 50% 55%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground font-sans antialiased;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    h1, h2, h3, h4 {
+        @apply font-heading;
+    }
+    ::selection {
+        background: #C2610C;
+        color: #fff;
+    }
+}
+
+@layer utilities {
+    .num {
+        font-family: '"JetBrains Mono"', monospace;
+        font-variant-numeric: tabular-nums;
+    }
+    .prose-editorial p {
+        @apply text-slate-700 leading-relaxed mb-5;
+        font-size: 1.075rem;
+    }
+    .prose-editorial h2 {
+        @apply text-2xl sm:text-3xl font-bold text-petrol-dark mt-12 mb-4 tracking-tight;
+    }
+    .prose-editorial h3 {
+        @apply text-xl font-semibold text-petrol-dark mt-8 mb-3;
+    }
+    .prose-editorial ul {
+        @apply my-5 space-y-2 pl-1;
+    }
+    .prose-editorial li {
+        @apply text-slate-700 leading-relaxed flex gap-3;
+    }
+    .prose-editorial ol {
+        @apply my-5 space-y-3 list-decimal pl-5;
+    }
+    .prose-editorial ol li {
+        @apply block;
+    }
+    .prose-editorial a {
+        @apply text-cta font-medium underline underline-offset-2 hover:text-cta-hover transition-colors;
+    }
+}
+
+@layer base {
+    [data-debug-wrapper="true"] {
+        display: contents !important;
+    }
+    [data-debug-wrapper="true"] > * {
+        margin-left: inherit;
+        margin-right: inherit;
+        margin-top: inherit;
+        margin-bottom: inherit;
+        padding-left: inherit;
+        padding-right: inherit;
+        padding-top: inherit;
+        padding-bottom: inherit;
+        column-gap: inherit;
+        row-gap: inherit;
+        gap: inherit;
+        border-left-width: inherit;
+        border-right-width: inherit;
+        border-top-width: inherit;
+        border-bottom-width: inherit;
+        border-left-style: inherit;
+        border-right-style: inherit;
+        border-top-style: inherit;
+        border-bottom-style: inherit;
+        border-left-color: inherit;
+        border-right-color: inherit;
+        border-top-color: inherit;
+        border-bottom-color: inherit;
+    }
+}

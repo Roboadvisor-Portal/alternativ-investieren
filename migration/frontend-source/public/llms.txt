@@ -1,0 +1,28 @@
+# Alternativ Investieren
+
+> Unabhängiges deutschsprachiges Fachportal zur Aufklärung über alternative Investmentformen (Crowdlending / P2P-Kredite und Immobilien-Crowdinvesting) für private Anleger in Deutschland, Österreich und der Schweiz (DACH). Redaktionell geprüfte Aufklärung, Anbietervergleich, Rechner und ein Glossar. Keine Anlageberatung.
+
+## Wichtigste Themen
+- Crowdlending / P2P-Kredite: Funktionsweise, Chancen, Risiken (Totalverlust, keine Einlagensicherung), Marktvolumen, Regulierung, Steuern.
+- Immobilien-Crowdinvesting: Nachrangdarlehen, Projektfinanzierung, rechtlicher Rahmen (Vermögensanlagengesetz, BaFin), Risiken.
+- Nachrangdarlehen: Rangrücktritt, Rangfolge im Insolvenzfall, Risikofaktoren.
+- Plattform-Insolvenz: Ablauf, Forderungsanmeldung, Anlegerschutz.
+- Diversifikation und Klumpenrisiko.
+
+## Kernseiten
+- Startseite: https://alternativ-investieren.com/
+- Crowdlending-Hub: https://alternativ-investieren.com/crowdlending/
+- Immobilien-Crowdinvesting-Hub: https://alternativ-investieren.com/immobilien-crowdinvesting/
+- Rechner-Übersicht: https://alternativ-investieren.com/rechner/
+  - Rendite-Szenario-Rechner: https://alternativ-investieren.com/rechner/rendite-szenario-rechner
+  - Diversifikations-Rechner: https://alternativ-investieren.com/rechner/diversifikations-rechner
+  - Steuer-Rechner Kapitalerträge: https://alternativ-investieren.com/rechner/steuer-rechner-kapitalertraege
+- Ratgeber/Magazin: https://alternativ-investieren.com/ratgeber/
+- Glossar: https://alternativ-investieren.com/glossar/
+- Risikohinweise: https://alternativ-investieren.com/risikohinweise/
+- Über uns: https://alternativ-investieren.com/ueber-uns/
+- Downloads: https://alternativ-investieren.com/downloads/
+
+## Hinweise
+- Alle Rendite-Angaben sind historisch bzw. Modellrechnungen, keine Prognosen. Keine Anlageberatung im Sinne des WpHG.
+- Einige Anbieter-Links sind Affiliate-Links (Werbung), gekennzeichnet mit rel="sponsored".
